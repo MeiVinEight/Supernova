@@ -11,10 +11,11 @@
 		"PersistentProjectileEntityMixin",
 		"enchant.DamageEnchantmentMixin",
 		"enchant.EnchantmentMixin",
-		"enchant.LuckEnchantmentMixin",
 		"enchant.LoyaltyEnchantmentMixin",
+		"enchant.LuckEnchantmentMixin",
 		"enchant.PowerEnchantmentMixin",
 		"enchant.ProtectionEnchantmentMixin",
+		"enchant.RiptideEnchantmentMixin",
 		"enchant.SweepingEnchantmentMixin",
 		"enchant.UnbreakingEnchantmentMixin"
 	],
