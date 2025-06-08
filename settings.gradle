@@ -1,18 +1,24 @@
-pluginManagement
-{
-	repositories
-	{
+pluginManagement {
+	repositories {
 		maven
 		{
-			name = 'Fabric'
+			name = 'Forge'
 			url = 'https://repository.hanbings.io/proxy'
 		}
 		maven
 		{
-			name = 'Fabric-Mirror'
+			name = 'Forge-Mirror'
 			url = 'https://maven.fabricmc.net/'
 		}
-		mavenCentral()
 		gradlePluginPortal()
+		maven
+		{
+			name = 'MinecraftForge'
+			url = 'https://maven.minecraftforge.net/'
+		}
 	}
+}
+
+plugins {
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
 }
