@@ -8,6 +8,7 @@
 		"AnvilMenuMixin",
 		"DamageEnchantmentMixin",
 		"ItemStackMixin",
+		"LootBonusEnchantmentMixin",
 		"TridentLoyaltyEnchantmentMixin"
 	],
 	"injectors": {
