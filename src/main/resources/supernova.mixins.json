@@ -6,6 +6,7 @@
 	"refmap": "supernova.refmap.json",
 	"mixins": [
 		"AnvilMenuMixin",
+		"DamageEnchantmentMixin",
 		"ItemStackMixin"
 	],
 	"injectors": {
