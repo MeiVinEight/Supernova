@@ -1,19 +1,19 @@
 package org.mve.sn;
 
-import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Mod(Supernova.MODID)
+@Mod(Supernova.SUPERNOVA)
 public class Supernova
 {
-	public static final String MODID = "supernova";
+	public static final String SUPERNOVA = "supernova";
 	// Directly reference a slf4j logger
-	private static final Logger LOGGER = LogUtils.getLogger();
+	public static final Logger LOGGER = LoggerFactory.getLogger("Supernova");
 
 	public Supernova(FMLJavaModLoadingContext context)
 	{
