@@ -10,6 +10,7 @@
 		"ArrowDamageEnchantmentMixin",
 		"ArrowMixin",
 		"DamageEnchantmentMixin",
+		"DigDurabilityEnchantmentMixin",
 		"EnchantmentMixin",
 		"ExplosionMixin",
 		"ItemStackMixin",
