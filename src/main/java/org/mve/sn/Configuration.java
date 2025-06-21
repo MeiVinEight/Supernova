@@ -33,7 +33,7 @@ public class Configuration
 	{
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 		ENCHANTMENT_COMPATIBILITY = builder
-			.comment("Whether or not widen enchantment capability")
+			.comment("Whether or not widen enchantment compatibility.")
 			.define("enchantmentCompatibility", false);
 		ENTITY_EXPLOSION = builder
 			.comment("Entity in list explosion will not destroy blocks")
