@@ -54,7 +54,7 @@ public class ConfigMenu extends Screen
 		Button saveButton = new Button.Builder(Component.translatable("supernova.config.save"), b -> this.save())
 			.bounds((width - (doneButtonWidth * 2) - PADDING) / 2, y, doneButtonWidth, 20)
 			.build();
-		Button doneButton = new Button.Builder(Component.translatable("supernova.config.done"), (button1) -> this.onClose())
+		Button doneButton = new Button.Builder(Component.translatable("supernova.config.done"), (button1) -> this.close())
 			.bounds((width - PADDING) / 2 + PADDING, y, doneButtonWidth, 20)
 			.build();
 		this.addRenderableWidget(saveButton);
@@ -79,5 +79,11 @@ public class ConfigMenu extends Screen
 		Configuration.ENCHANTMENT_COMPATIBILITY.save();
 		Configuration.ENTITY_EXPLOSION.set(this.explosion);
 		Configuration.ENTITY_EXPLOSION.save();
+	}
+
+	public void close()
+	{
+		this.save();
+		this.onClose();
 	}
 }
