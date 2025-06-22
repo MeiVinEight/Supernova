@@ -15,7 +15,7 @@ public class Configuration
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_EXPLOSION;
 	public static final ForgeConfigSpec SPECIFICATION;
 
-	private static boolean validateEntity(Object id)
+	public static boolean validateEntity(Object id)
 	{
 		if (!(id instanceof String))
 			return false;
@@ -37,7 +37,7 @@ public class Configuration
 			.define("enchantmentCompatibility", false);
 		ENTITY_EXPLOSION = builder
 			.comment("Entity in list explosion will not destroy blocks")
-			.defineListAllowEmpty("entityExplosion", List.of("minecraft:creeper"), Configuration::validateEntity);
+			.defineListAllowEmpty("entityExplosion", List.of("minecraft:creeper"), o -> true);
 		SPECIFICATION = builder.build();
 	}
 }

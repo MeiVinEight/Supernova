@@ -25,13 +25,18 @@ public class ConfigArray extends ScrollPanel
 	@Override
 	protected int getContentHeight()
 	{
-		return 10 * 20 + 9 * 6 - 4;
+		int content = 0;
+		for (ConfigValue value : this.value)
+			content += value.height + ConfigMenu.PADDING;
+		return content - ConfigMenu.PADDING;
 	}
 
 	@Override
 	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
 	{
 		relativeY -= 4;
+		if (this.height >= this.getContentHeight())
+			relativeY = ConfigMenu.PADDING;
 		boolean changed = this.previousY != relativeY;
 		this.previousY = relativeY;
 		for (ConfigValue configValue : this.value)
@@ -39,7 +44,7 @@ public class ConfigArray extends ScrollPanel
 			if (changed)
 				configValue.position(x, relativeY);
 			configValue.draw(guiGraphics, mouseX, mouseY);
-			relativeY += configValue.height;
+			relativeY += configValue.height + ConfigMenu.PADDING;
 		}
 	}
 
@@ -63,9 +68,10 @@ public class ConfigArray extends ScrollPanel
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)
 	{
-		if (!this.click(mouseX, mouseY))
-			return super.mouseClicked(mouseX, mouseY, button);
-		return true;
+		if (this.click(mouseX, mouseY))
+			return true;
+		this.setFocused(null);
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	public void push(ConfigValue value)
@@ -91,9 +97,9 @@ public class ConfigArray extends ScrollPanel
 				return false;
 			if (cy + configValue.height >= y1)
 			{
-				configValue.click(x, y);
-				break;
+				return configValue.click(x, y);
 			}
+			cy += configValue.height + ConfigMenu.PADDING;
 		}
 		return false;
 	}

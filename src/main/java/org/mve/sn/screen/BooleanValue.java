@@ -3,17 +3,17 @@ package org.mve.sn.screen;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public class BooleanValue extends ConfigValue
 {
 	public boolean value;
-	public int buttonWidth = 100;
 	private Button button;
 
-	public BooleanValue(String key, Font font)
+	public BooleanValue(Screen screen, String key, Font font)
 	{
-		super(key, font);
+		super(screen, key, font);
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class BooleanValue extends ConfigValue
 	{
 		super.position(x, y);
 		this.button = new Button.Builder(Component.literal(ConfigMenu.BOOLEAN_TEXT[intValue(this.value)]), this::onClick)
-			.bounds(x + this.width - this.buttonWidth - 50, y, this.buttonWidth, this.height)
+			.bounds(x + this.width - this.valueWidth - this.indent, y, this.valueWidth, this.lineHeight)
 			.build();
 	}
 
@@ -33,14 +33,18 @@ public class BooleanValue extends ConfigValue
 	}
 
 	@Override
-	public void click(double x, double y)
+	public boolean click(double x, double y)
 	{
+		if (super.click(x, y))
+			return true;
 		if (this.button == null)
-			return;
+			return false;
 		this.button.mouseClicked(x, y, 0);
 		this.button = new Button.Builder(Component.literal(ConfigMenu.BOOLEAN_TEXT[intValue(this.value)]), this::onClick)
-			.bounds(this.button.getX(), this.button.getY(), this.buttonWidth, this.height)
+			.bounds(this.button.getX(), this.button.getY(), this.valueWidth, this.lineHeight)
 			.build();
+		this.parent.setFocused(this.button);
+		return true;
 	}
 
 	public void onClick(Button button)

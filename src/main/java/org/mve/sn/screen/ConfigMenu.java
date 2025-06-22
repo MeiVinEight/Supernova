@@ -1,5 +1,6 @@
 package org.mve.sn.screen;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -9,24 +10,25 @@ import org.jetbrains.annotations.NotNull;
 import org.mve.sn.Configuration;
 import org.mve.sn.Supernova;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ConfigMenu extends Screen
 {
 	public static final int PADDING = 6;
 	public static final String[] BOOLEAN_TEXT = {"§cNO", "§aYES"};
 	private final Screen parent;
-	public BooleanValue compatibility;
-	public final List<String> explosion = new ArrayList<>(Configuration.ENTITY_EXPLOSION.get());
+	public final BooleanValue compatibility;
+	public final StringArrayValue explosion;
 
 	public ConfigMenu(Screen parent)
 	{
 		super(Component.translatable("supernova.config.title"));
 		this.parent = parent;
 		Minecraft mc = parent.getMinecraft();
-		this.compatibility = new BooleanValue("supernova.config.compatibility", mc.font);
+		this.compatibility = new BooleanValue(this, "supernova.config.compatibility", mc.font);
 		this.compatibility.value = Configuration.ENCHANTMENT_COMPATIBILITY.get();
+		this.explosion = new StringArrayValue(this, "supernova.config.entity.explosion", mc.font);
+		this.explosion.value(Configuration.ENTITY_EXPLOSION.get());
+		this.explosion.defaultValue = ImmutableList.copyOf(Configuration.ENTITY_EXPLOSION.getDefault());
+		this.explosion.tooltip = Component.translatable("supernova.config.entity.explosion.tooltip");
 	}
 
 	@Override
@@ -47,6 +49,7 @@ public class ConfigMenu extends Screen
 		int containerHeight = this.height - (3 * PADDING) - 20;
 
 		this.compatibility.width = containerWidth;
+		this.explosion.width = containerWidth;
 
 		int y = this.height - 20 - PADDING;
 		int doneButtonWidth = Math.min(200, (this.width - (PADDING * 3)) / 2);
@@ -60,7 +63,10 @@ public class ConfigMenu extends Screen
 		this.addRenderableWidget(doneButton);
 
 		ConfigArray array = new ConfigArray(this.getMinecraft(), containerWidth, containerHeight, PADDING, PADDING);
+		this.compatibility.parent = array;
+		this.explosion.parent = array;
 		array.push(this.compatibility);
+		array.push(this.explosion);
 		this.addRenderableWidget(array);
 	}
 
@@ -71,12 +77,18 @@ public class ConfigMenu extends Screen
 		super.render(p_281549_, p_281550_, p_282878_, p_282465_);
 	}
 
+	@Override
+	public boolean keyPressed(int p_96552_, int p_96553_, int p_96554_)
+	{
+		return super.keyPressed(p_96552_, p_96553_, p_96554_);
+	}
+
 	public void save()
 	{
 		Supernova.LOGGER.info("Configuration saving");
 		Configuration.ENCHANTMENT_COMPATIBILITY.set(this.compatibility.value);
 		Configuration.ENCHANTMENT_COMPATIBILITY.save();
-		Configuration.ENTITY_EXPLOSION.set(this.explosion);
+		Configuration.ENTITY_EXPLOSION.set(this.explosion.value());
 		Configuration.ENTITY_EXPLOSION.save();
 	}
 
