@@ -32,7 +32,6 @@ public class ConfigMenu extends Screen
 	@Override
 	public void onClose()
 	{
-		this.save();
 		if (this.minecraft == null)
 			super.onClose();
 		else
