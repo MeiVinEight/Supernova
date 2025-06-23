@@ -4,11 +4,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.mve.sn.screen.ConfigMenu;
 
 import java.util.List;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Configuration
 {
 	public static final ForgeConfigSpec.BooleanValue REPAIR_COST;
@@ -43,6 +47,21 @@ public class Configuration
 		ConfigMenu configScreen = new ConfigMenu(screen);
 		mc.pushGuiLayer(configScreen);
 		return configScreen;
+	}
+
+	@SubscribeEvent
+	public static void onConfig(ModConfigEvent event)
+	{
+		Configuration.check();
+	}
+
+	public static void check()
+	{
+		for (String id : ENTITY_EXPLOSION.get())
+		{
+			if (!validateEntity(id))
+				Supernova.LOGGER.warn("Unknown entity ID: {}", id);
+		}
 	}
 
 	static
