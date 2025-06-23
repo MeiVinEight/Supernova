@@ -36,7 +36,6 @@ public class ExplosionMixin
 	private void changeBlockInteraction(Level p_46051_, @Nullable Entity p_46052_, @Nullable DamageSource p_46053_, @Nullable ExplosionDamageCalculator p_46054_, double p_46055_, double p_46056_, double p_46057_, float p_46058_, boolean p_46059_, Explosion.BlockInteraction p_46060_, CallbackInfo ci)
 	{
 		List<? extends String> list = Configuration.ENTITY_EXPLOSION.get();
-		Supernova.LOGGER.info(list.toString());
 		if (list.isEmpty())
 			return;
 		if (p_46052_ == null)
