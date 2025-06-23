@@ -213,6 +213,7 @@ public class ConfigMenu extends Screen
 		Configuration.ENDER_SKELETON_PROBABILITY.save();
 		Configuration.ENTITY_EXPLOSION.set(this.explosion.value());
 		Configuration.ENTITY_EXPLOSION.save();
+		Configuration.check();
 	}
 
 	public void close()
