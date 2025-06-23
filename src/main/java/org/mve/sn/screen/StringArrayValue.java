@@ -15,47 +15,43 @@ import java.util.List;
 
 public class StringArrayValue extends ConfigValue
 {
-	public static final int CONTENT_HEIGHT = 20;
 	public ImmutableList<String> defaultValue;
 	private boolean expand = false;
 	public final ArrayList<StringEntry> value = new ArrayList<>();
-	private Button addon;
+	private final Button addon;
 
 	public StringArrayValue(Screen screen, String key, Font font)
 	{
 		super(screen, key, font);
 		this.resetEnable = true;
+		this.addon = new Button.Builder(Component.literal("+"), this::onAddon)
+			.size(this.boxWidth(), this.lineHeight)
+			.build();
+		this.resetValue = this::reset;
 	}
 
 	@Override
-	public void position(int x, int y)
+	public void draw(GuiGraphics graphics, int x, int y, int mouseX, int mouseY)
 	{
-		super.position(x, y);
-		x += this.indent + (2 * CONTENT_HEIGHT) + ConfigMenu.PADDING;
-		y += CONTENT_HEIGHT + ConfigMenu.PADDING;
-		int boxWidth = this.width - (2 * this.indent) - (2 * CONTENT_HEIGHT);
+		super.draw(graphics, x, y, mouseX, mouseY);
+
+		x += this.indent + (2 * this.lineHeight) + ConfigMenu.PADDING;
+		y += this.lineHeight + ConfigMenu.PADDING;
 		for (StringEntry entry : this.value)
 		{
-			entry.remove = new Button.Builder(Component.literal("§c-"), (b) -> {})
-				.bounds(x - CONTENT_HEIGHT - ConfigMenu.PADDING, y, CONTENT_HEIGHT, CONTENT_HEIGHT)
-				.build();
-			EditBox box = entry.value;
-			EditBox box1 = new EditBox(this.font, x, y, boxWidth, CONTENT_HEIGHT, Component.empty());
-			box1.setValue(box.getValue());
-			entry.value = box1;
-			y += CONTENT_HEIGHT + ConfigMenu.PADDING;
+			entry.remove.setPosition(x - this.lineHeight - ConfigMenu.PADDING, y);
+			entry.remove.setWidth(this.lineHeight);
+			entry.remove.setHeight(this.lineHeight);
+			entry.value.setPosition(x, y);
+			entry.value.setWidth(this.boxWidth());
+			entry.value.setHeight(this.lineHeight);
+			y += this.lineHeight + ConfigMenu.PADDING;
 		}
-		this.addon = new Button.Builder(Component.literal("+"), this::onAddon)
-			.bounds(x, y, boxWidth, CONTENT_HEIGHT)
-			.build();
+		this.addon.setPosition(x, y);
+		this.addon.setWidth(this.boxWidth());
+		this.addon.setHeight(this.lineHeight);
 		this.updateHeight();
-	}
 
-	@Override
-	public void draw(GuiGraphics graphics, int mouseX, int mouseY)
-	{
-		this.resetActive = this.defaultValue != null;
-		super.draw(graphics, mouseX, mouseY);
 		if (!this.expand)
 			return;
 		for (StringEntry value : this.value)
@@ -91,8 +87,7 @@ public class StringArrayValue extends ConfigValue
 			if (value.remove.mouseClicked(x, y, 0))
 			{
 				this.value.remove(i);
-				this.position(this.previousX, this.previousY);
-				return false;
+				return true;
 			}
 			flag = value.remove.mouseClicked(x, y, 0);
 			if (flag)
@@ -110,9 +105,9 @@ public class StringArrayValue extends ConfigValue
 	}
 
 	@Override
-	public void onReset(Button b)
+	public void update()
 	{
-		this.value(this.defaultValue);
+		this.resetActive = this.defaultValue != null;
 	}
 
 	@Override
@@ -122,44 +117,31 @@ public class StringArrayValue extends ConfigValue
 		this.updateHeight();
 	}
 
+	public void reset(ConfigValue ignored)
+	{
+		this.value(this.defaultValue);
+	}
+
 	public void updateHeight()
 	{
-		int newHeight = CONTENT_HEIGHT;
+		int newHeight = this.lineHeight;
 		if (this.expand)
-			newHeight += ((this.value.size() + 1) * (CONTENT_HEIGHT + ConfigMenu.PADDING)) + ConfigMenu.PADDING;
+			newHeight += ((this.value.size() + 1) * (this.lineHeight + ConfigMenu.PADDING)) + ConfigMenu.PADDING;
 		this.height = newHeight;
 	}
 
 	public void onAddon(Button b)
 	{
-		int x = this.previousX + this.indent + (2 * CONTENT_HEIGHT) + ConfigMenu.PADDING;
-		int y = this.previousY + CONTENT_HEIGHT + ConfigMenu.PADDING;
-		y += this.value.size() * (CONTENT_HEIGHT + ConfigMenu.PADDING);
-
-		int boxWidth = this.width - (2 * this.indent) - (2 * CONTENT_HEIGHT);
-		EditBox box = new EditBox(this.font, x, y, boxWidth, CONTENT_HEIGHT, Component.empty());
-		StringEntry entry = new StringEntry();
-		entry.value = box;
-		this.value.add(entry);
-		this.position(this.previousX, this.previousY);
+		this.value.add(this.entry(""));
 	}
 
 	public void value(List<? extends String> value)
 	{
-		int x = this.previousX + this.indent + (2 * CONTENT_HEIGHT) + ConfigMenu.PADDING;
-		int y = this.previousY + CONTENT_HEIGHT + ConfigMenu.PADDING;
-		int boxWidth = this.width - (2 * this.indent) - (2 * CONTENT_HEIGHT);
 		this.value.clear();
 		for (String s : value)
 		{
-			EditBox box = new EditBox(this.font, x, y, boxWidth, CONTENT_HEIGHT, Component.empty());
-			box.setValue(s);
-			StringEntry entry = new StringEntry();
-			entry.value = box;
-			this.value.add(entry);
-			y += CONTENT_HEIGHT + ConfigMenu.PADDING;
+			this.value.add(this.entry(s));
 		}
-		this.position(this.previousX, this.previousY);
 	}
 
 	public List<String> value()
@@ -169,5 +151,26 @@ public class StringArrayValue extends ConfigValue
 			if (!value.value.getValue().isEmpty())
 				list.add(value.value.getValue());
 		return list;
+	}
+
+	public StringEntry entry(String val)
+	{
+		StringEntry entry = new StringEntry();
+		entry.remove = new Button.Builder(Component.literal("§c-"), (b) -> {})
+			.size(this.lineHeight, this.lineHeight)
+			.build();
+		int x = this.previousX + this.indent + (2 * this.lineHeight) + ConfigMenu.PADDING;
+		int y = this.previousY + this.lineHeight + ConfigMenu.PADDING;
+		EditBox box = new EditBox(this.font, x, y, this.boxWidth(), this.lineHeight, Component.empty());
+		box.setValue(val);
+		box.setHighlightPos(0);
+		box.setCursorPosition(0);
+		entry.value = box;
+		return entry;
+	}
+
+	public int boxWidth()
+	{
+		return this.width - (2 * this.indent) - (2 * this.lineHeight) - ConfigMenu.PADDING;
 	}
 }

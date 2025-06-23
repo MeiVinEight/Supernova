@@ -12,6 +12,9 @@ import java.util.List;
 public class Configuration
 {
 	public static final ForgeConfigSpec.BooleanValue ENCHANTMENT_COMPATIBILITY;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SHARPNESS;
+	public static final ForgeConfigSpec.BooleanValue ENDER_BOW;
+	public static final ForgeConfigSpec.DoubleValue ENDER_SKELETON_PROBABILITY;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_EXPLOSION;
 	public static final ForgeConfigSpec SPECIFICATION;
 
@@ -34,10 +37,19 @@ public class Configuration
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 		ENCHANTMENT_COMPATIBILITY = builder
 			.comment("Whether or not widen enchantment compatibility.")
-			.define("enchantmentCompatibility", false);
+			.define("ENCHANTMENT_COMPATIBILITY", false);
+		MAX_LEVEL_SHARPNESS = builder
+			.comment("Max level of sharpness")
+			.defineInRange("MAX_LEVEL_SHARPNESS", 5, 1, 255);
+		ENDER_BOW = builder
+			.comment("Whether or not enable ender bow")
+			.define("ENDERBOW", false);
+		ENDER_SKELETON_PROBABILITY = builder
+			.comment("Probability for skeleton become to ender skeleton (with ender bow)")
+			.defineInRange("ENDER_SKELETON_PROBABILITY", 0.0625, 0, 1);
 		ENTITY_EXPLOSION = builder
 			.comment("Entity in list explosion will not destroy blocks")
-			.defineListAllowEmpty("entityExplosion", List.of("minecraft:creeper"), o -> true);
+			.defineListAllowEmpty("ENTITY_EXPLOSION", List.of("minecraft:creeper"), o -> true);
 		SPECIFICATION = builder.build();
 	}
 }

@@ -27,7 +27,8 @@ public class ConfigArray extends ScrollPanel
 	{
 		int content = 0;
 		for (ConfigValue value : this.value)
-			content += value.height + ConfigMenu.PADDING;
+			if (value.visible)
+				content += value.height + ConfigMenu.PADDING;
 		return content - ConfigMenu.PADDING;
 	}
 
@@ -37,13 +38,12 @@ public class ConfigArray extends ScrollPanel
 		relativeY -= 4;
 		if (this.height >= this.getContentHeight())
 			relativeY = ConfigMenu.PADDING;
-		boolean changed = this.previousY != relativeY;
 		this.previousY = relativeY;
 		for (ConfigValue configValue : this.value)
 		{
-			if (changed)
-				configValue.position(x, relativeY);
-			configValue.draw(guiGraphics, mouseX, mouseY);
+			if (!configValue.visible)
+				continue;
+			configValue.draw(guiGraphics, x, relativeY, mouseX, mouseY);
 			relativeY += configValue.height + ConfigMenu.PADDING;
 		}
 	}
@@ -76,6 +76,8 @@ public class ConfigArray extends ScrollPanel
 
 	public void push(ConfigValue value)
 	{
+		value.width = this.width;
+		value.parent = this;
 		this.value.add(value);
 	}
 
@@ -93,6 +95,8 @@ public class ConfigArray extends ScrollPanel
 		int cy = 0;
 		for (ConfigValue configValue : this.value)
 		{
+			if (!configValue.visible)
+				continue;
 			if (cy > y1)
 				return false;
 			if (cy + configValue.height >= y1)

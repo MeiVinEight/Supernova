@@ -1,6 +1,7 @@
 package org.mve.sn.mixin;
 
 import net.minecraft.world.item.enchantment.DamageEnchantment;
+import org.mve.sn.Configuration;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,6 +15,6 @@ public class DamageEnchantmentMixin
 	{
 		DamageEnchantment _this = (DamageEnchantment)(Object) this;
 		// Sharpness
-		if (_this.type == 0) cir.setReturnValue(10);
+		if (_this.type == 0) cir.setReturnValue(Configuration.MAX_LEVEL_SHARPNESS.get());
 	}
 }

@@ -37,6 +37,7 @@ public class EnderBow
 
 	public static void collision(Projectile entity, HitResult result)
 	{
+		if (!Configuration.ENDER_BOW.get()) return;
 		if (entity.level().isClientSide()) return;
 		if (result.getType() == HitResult.Type.MISS) return;
 		if (!(entity instanceof Arrow)) return;
@@ -66,6 +67,7 @@ public class EnderBow
 
 	public static void arrow(Arrow arrow, LivingEntity owner)
 	{
+		if (!Configuration.ENDER_BOW.get()) return;
 		SupernovaArrow sna = (SupernovaArrow) arrow;
 		ItemStack stack = owner.getMainHandItem();
 		if (stack == null || stack.isEmpty()) return;

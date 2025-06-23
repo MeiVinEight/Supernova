@@ -4,6 +4,12 @@
 	"supernova.config.done":"DONE",
 	"supernova.config.reset": "Reset to default value",
 	"supernova.config.compatibility": "Widen enchantment compatibility",
+	"supernova.config.enderbow": "Whether or not enable ender bow",
+	"supernova.confug.ender.skeleton": "Probability for ender skeleton",
 	"supernova.config.entity.explosion": "Entity explosion",
-	"supernova.config.entity.explosion.tooltip": "Explosions of entities in the list will not destroy blocks"
+	"supernova.config.entity.explosion.tooltip": "Explosions of entities in the list will not destroy blocks",
+	"supernova.config.group.enchantment": "ENCHANTMENT",
+	"supernova.config.group.enchantment.level": "ENCHANTMENT MAX LEVEL",
+	"supernova.config.group.enderbow": "ENDER BOW",
+	"supernova.config.group.explosion": "ENTITY EXPLOSION"
 }

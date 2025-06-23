@@ -13,9 +13,15 @@ import org.mve.sn.Supernova;
 public class ConfigMenu extends Screen
 {
 	public static final int PADDING = 6;
-	public static final String[] BOOLEAN_TEXT = {"§cNO", "§aYES"};
 	private final Screen parent;
+	public final GroupValue groupEnchantment;
 	public final BooleanValue compatibility;
+	public final GroupValue groupLevel;
+	public final LongValue sharpness;
+	public final GroupValue groupEnderbow;
+	public final BooleanValue enderbow;
+	public final DoubleValue skeleton;
+	public final GroupValue groupExplosion;
 	public final StringArrayValue explosion;
 
 	public ConfigMenu(Screen parent)
@@ -23,12 +29,39 @@ public class ConfigMenu extends Screen
 		super(Component.translatable("supernova.config.title"));
 		this.parent = parent;
 		Minecraft mc = parent.getMinecraft();
+
+		this.groupEnchantment = new GroupValue(this, "supernova.config.group.enchantment", mc.font);
 		this.compatibility = new BooleanValue(this, "supernova.config.compatibility", mc.font);
 		this.compatibility.value = Configuration.ENCHANTMENT_COMPATIBILITY.get();
+		this.compatibility.resetValue = (value) -> ((BooleanValue) value).value = Configuration.ENCHANTMENT_COMPATIBILITY.get();
+
+		this.groupLevel = new GroupValue(this, "supernova.config.group.enchantment.level", mc.font);
+		this.sharpness = new LongValue(this, "enchantment.minecraft.sharpness", mc.font);
+		this.sharpness.min = 1;
+		this.sharpness.max = 255;
+		this.sharpness.value(Configuration.MAX_LEVEL_SHARPNESS.get());
+		this.sharpness.resetValue = (val) -> ((LongValue) val).value(Configuration.MAX_LEVEL_SHARPNESS.get());
+		this.groupLevel.group.add(this.sharpness);
+
+		this.groupEnchantment.group.add(this.compatibility);
+		this.groupEnchantment.group.add(this.groupLevel);
+
+		this.groupEnderbow = new GroupValue(this, "supernova.config.group.enderbow", mc.font);
+		this.enderbow = new BooleanValue(this, "supernova.config.enderbow", mc.font);
+		this.enderbow.value = Configuration.ENDER_BOW.get();
+		this.enderbow.resetValue = (value) -> ((BooleanValue) value).value = Configuration.ENDER_BOW.get();
+		this.skeleton = new DoubleValue(this, "supernova.confug.ender.skeleton", mc.font);
+		this.skeleton.value(Configuration.ENDER_SKELETON_PROBABILITY.get());
+		this.skeleton.resetValue = (value) -> ((DoubleValue) value).value(Configuration.ENDER_SKELETON_PROBABILITY.get());
+		this.groupEnderbow.group.add(this.enderbow);
+		this.groupEnderbow.group.add(this.skeleton);
+
+		this.groupExplosion = new GroupValue(this, "supernova.config.group.explosion", mc.font);
 		this.explosion = new StringArrayValue(this, "supernova.config.entity.explosion", mc.font);
 		this.explosion.value(Configuration.ENTITY_EXPLOSION.get());
 		this.explosion.defaultValue = ImmutableList.copyOf(Configuration.ENTITY_EXPLOSION.getDefault());
 		this.explosion.tooltip = Component.translatable("supernova.config.entity.explosion.tooltip");
+		this.groupExplosion.group.add(this.explosion);
 	}
 
 	@Override
@@ -48,9 +81,6 @@ public class ConfigMenu extends Screen
 		int containerWidth = this.width - (2 * PADDING);
 		int containerHeight = this.height - (3 * PADDING) - 20;
 
-		this.compatibility.width = containerWidth;
-		this.explosion.width = containerWidth;
-
 		int y = this.height - 20 - PADDING;
 		int doneButtonWidth = Math.min(200, (this.width - (PADDING * 3)) / 2);
 		Button saveButton = new Button.Builder(Component.translatable("supernova.config.save"), b -> this.save())
@@ -63,9 +93,14 @@ public class ConfigMenu extends Screen
 		this.addRenderableWidget(doneButton);
 
 		ConfigArray array = new ConfigArray(this.getMinecraft(), containerWidth, containerHeight, PADDING, PADDING);
-		this.compatibility.parent = array;
-		this.explosion.parent = array;
+		array.push(this.groupEnchantment);
 		array.push(this.compatibility);
+		array.push(this.groupLevel);
+		array.push(this.sharpness);
+		array.push(this.groupEnderbow);
+		array.push(this.enderbow);
+		array.push(this.skeleton);
+		array.push(this.groupExplosion);
 		array.push(this.explosion);
 		this.addRenderableWidget(array);
 	}
@@ -73,6 +108,7 @@ public class ConfigMenu extends Screen
 	@Override
 	public void render(@NotNull GuiGraphics p_281549_, int p_281550_, int p_282878_, float p_282465_)
 	{
+		this.skeleton.active = this.enderbow.value;
 		this.renderBackground(p_281549_);
 		super.render(p_281549_, p_281550_, p_282878_, p_282465_);
 	}
@@ -88,6 +124,12 @@ public class ConfigMenu extends Screen
 		Supernova.LOGGER.info("Configuration saving");
 		Configuration.ENCHANTMENT_COMPATIBILITY.set(this.compatibility.value);
 		Configuration.ENCHANTMENT_COMPATIBILITY.save();
+		Configuration.MAX_LEVEL_SHARPNESS.set(this.sharpness.value.intValue());
+		Configuration.MAX_LEVEL_SHARPNESS.save();
+		Configuration.ENDER_BOW.set(this.enderbow.value);
+		Configuration.ENDER_BOW.save();
+		Configuration.ENDER_SKELETON_PROBABILITY.set(this.skeleton.value.doubleValue());
+		Configuration.ENDER_SKELETON_PROBABILITY.save();
 		Configuration.ENTITY_EXPLOSION.set(this.explosion.value());
 		Configuration.ENTITY_EXPLOSION.save();
 	}
