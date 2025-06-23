@@ -15,6 +15,7 @@ public class ConfigMenu extends Screen
 	public static final int PADDING = 6;
 	private final Screen parent;
 	public final GroupValue groupEnchantment;
+	public final BooleanValue repaircost;
 	public final BooleanValue compatibility;
 	public final GroupValue groupLevel;
 	public final LongValue sharpness;
@@ -31,6 +32,12 @@ public class ConfigMenu extends Screen
 		Minecraft mc = parent.getMinecraft();
 
 		this.groupEnchantment = new GroupValue(this, "supernova.config.group.enchantment", mc.font);
+
+		this.repaircost = new BooleanValue(this, "supernova.config.repaircost", mc.font);
+		this.repaircost.value = Configuration.REPAIR_COST.get();
+		this.repaircost.resetValue = (val) -> ((BooleanValue) val).value = Configuration.REPAIR_COST.get();
+		this.repaircost.tooltip = Component.translatable("supernova.config.repaircost.tooltip");
+
 		this.compatibility = new BooleanValue(this, "supernova.config.compatibility", mc.font);
 		this.compatibility.value = Configuration.ENCHANTMENT_COMPATIBILITY.get();
 		this.compatibility.resetValue = (value) -> ((BooleanValue) value).value = Configuration.ENCHANTMENT_COMPATIBILITY.get();
@@ -43,6 +50,7 @@ public class ConfigMenu extends Screen
 		this.sharpness.resetValue = (val) -> ((LongValue) val).value(Configuration.MAX_LEVEL_SHARPNESS.get());
 		this.groupLevel.group.add(this.sharpness);
 
+		this.groupEnchantment.group.add(this.repaircost);
 		this.groupEnchantment.group.add(this.compatibility);
 		this.groupEnchantment.group.add(this.groupLevel);
 
@@ -94,6 +102,7 @@ public class ConfigMenu extends Screen
 
 		ConfigArray array = new ConfigArray(this.getMinecraft(), containerWidth, containerHeight, PADDING, PADDING);
 		array.push(this.groupEnchantment);
+		array.push(this.repaircost);
 		array.push(this.compatibility);
 		array.push(this.groupLevel);
 		array.push(this.sharpness);
@@ -122,6 +131,8 @@ public class ConfigMenu extends Screen
 	public void save()
 	{
 		Supernova.LOGGER.info("Configuration saving");
+		Configuration.REPAIR_COST.set(this.repaircost.value);
+		Configuration.REPAIR_COST.save();
 		Configuration.ENCHANTMENT_COMPATIBILITY.set(this.compatibility.value);
 		Configuration.ENCHANTMENT_COMPATIBILITY.save();
 		Configuration.MAX_LEVEL_SHARPNESS.set(this.sharpness.value.intValue());

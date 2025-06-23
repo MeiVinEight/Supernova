@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Configuration
 {
+	public static final ForgeConfigSpec.BooleanValue REPAIR_COST;
 	public static final ForgeConfigSpec.BooleanValue ENCHANTMENT_COMPATIBILITY;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SHARPNESS;
 	public static final ForgeConfigSpec.BooleanValue ENDER_BOW;
@@ -35,6 +36,9 @@ public class Configuration
 	static
 	{
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+		REPAIR_COST = builder
+			.comment("Whether or not enable repair cost")
+			.define("REPAIR_COST", true);
 		ENCHANTMENT_COMPATIBILITY = builder
 			.comment("Whether or not widen enchantment compatibility.")
 			.define("ENCHANTMENT_COMPATIBILITY", false);

@@ -3,6 +3,8 @@
 	"supernova.config.save":"SAVE",
 	"supernova.config.done":"DONE",
 	"supernova.config.reset": "Reset to default value",
+	"supernova.config.repaircost": "Enable repair cost",
+	"supernova.config.repaircost.tooltip": "When disable, enchant in anvil will not cost more and more exp",
 	"supernova.config.compatibility": "Widen enchantment compatibility",
 	"supernova.config.enderbow": "Whether or not enable ender bow",
 	"supernova.confug.ender.skeleton": "Probability for ender skeleton",
