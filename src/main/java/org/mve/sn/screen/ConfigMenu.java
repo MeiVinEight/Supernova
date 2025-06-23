@@ -9,7 +9,6 @@ import net.minecraft.client.gui.components.events.AbstractContainerEventHandler;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.common.ForgeConfigSpec;
-import org.jetbrains.annotations.NotNull;
 import org.mve.sn.Configuration;
 import org.mve.sn.Supernova;
 
@@ -162,7 +161,7 @@ public class ConfigMenu extends Screen
 	}
 
 	@Override
-	public void render(@NotNull GuiGraphics p_281549_, int p_281550_, int p_282878_, float p_282465_)
+	public void render(GuiGraphics p_281549_, int p_281550_, int p_282878_, float p_282465_)
 	{
 		this.skeleton.active = this.enderbow.value;
 		this.renderBackground(p_281549_);

@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,13 +54,13 @@ public class ConfigArray extends ScrollPanel
 	}
 
 	@Override
-	public @NotNull NarrationPriority narrationPriority()
+	public NarrationPriority narrationPriority()
 	{
 		return NarrationPriority.NONE;
 	}
 
 	@Override
-	public void updateNarration(@NotNull NarrationElementOutput p_169152_)
+	public void updateNarration(NarrationElementOutput p_169152_)
 	{
 	}
 
