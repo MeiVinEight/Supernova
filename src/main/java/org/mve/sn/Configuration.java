@@ -13,7 +13,19 @@ public class Configuration
 {
 	public static final ForgeConfigSpec.BooleanValue REPAIR_COST;
 	public static final ForgeConfigSpec.BooleanValue ENCHANTMENT_COMPATIBILITY;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_BLASTPROTECTION;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_FEATHERFALLING;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_FIREPROTECTION;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_FORTUNE;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_LOOTING;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_LOYALTY;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_LUCKOFTHESEA;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_POWER;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_PROJECTILEPROTECTION;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_PROTECTION;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SHARPNESS;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SWEEPING;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_UNBREAKING;
 	public static final ForgeConfigSpec.BooleanValue ENDER_BOW;
 	public static final ForgeConfigSpec.DoubleValue ENDER_SKELETON_PROBABILITY;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_EXPLOSION;
@@ -42,9 +54,45 @@ public class Configuration
 		ENCHANTMENT_COMPATIBILITY = builder
 			.comment("Whether or not widen enchantment compatibility.")
 			.define("ENCHANTMENT_COMPATIBILITY", false);
+		MAX_LEVEL_BLASTPROTECTION = builder
+			.comment("Max level of blast protection")
+			.defineInRange("MAX_LEVEL_BLASTPROTECTION", 4, 1, 255);
+		MAX_LEVEL_FEATHERFALLING = builder
+			.comment("Max level of feather falling")
+			.defineInRange("MAX_LEVEL_FEATHERFALLING", 4, 1, 255);
+		MAX_LEVEL_FIREPROTECTION = builder
+			.comment("Max level of fire protection")
+			.defineInRange("MAX_LEVEL_FIREPROTECTION", 4, 1, 255);
+		MAX_LEVEL_FORTUNE = builder
+			.comment("Max level of fortune")
+			.defineInRange("MAX_LEVEL_FORTUNE", 3, 1, 255);
+		MAX_LEVEL_LOOTING = builder
+			.comment("Max level of looting")
+			.defineInRange("MAX_LEVEL_LOOTING", 3, 1, 255);
+		MAX_LEVEL_LOYALTY = builder
+			.comment("Max level of loyalty")
+			.defineInRange("MAX_LEVEL_LOYALTY", 3, 1, 255);
+		MAX_LEVEL_LUCKOFTHESEA = builder
+			.comment("Max level of luck of the sea")
+			.defineInRange("MAX_LEVEL_LUCKOFTHESEA", 3, 1, 255);
+		MAX_LEVEL_POWER = builder
+			.comment("Max level of power")
+			.defineInRange("MAX_LEVEL_POWER", 5, 1, 255);
+		MAX_LEVEL_PROJECTILEPROTECTION = builder
+			.comment("Max level of projectile protection")
+			.defineInRange("MAX_LEVEL_PROJECTILEPROTECTION", 4, 1, 255);
+		MAX_LEVEL_PROTECTION = builder
+			.comment("Max level of protection")
+			.defineInRange("MAX_LEVEL_PROTECTION", 4, 1, 255);
 		MAX_LEVEL_SHARPNESS = builder
 			.comment("Max level of sharpness")
 			.defineInRange("MAX_LEVEL_SHARPNESS", 5, 1, 255);
+		MAX_LEVEL_SWEEPING = builder
+			.comment("Max level of sweeping")
+			.defineInRange("MAX_LEVEL_SWEEPING", 3, 1, 255);
+		MAX_LEVEL_UNBREAKING = builder
+			.comment("Max level of unbreaking")
+			.defineInRange("MAX_LEVEL_UNBREAKING", 3, 1, 255);
 		ENDER_BOW = builder
 			.comment("Whether or not enable ender bow")
 			.define("ENDERBOW", false);
