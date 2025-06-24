@@ -8,13 +8,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.mve.Trie;
 import org.mve.sn.screen.ConfigMenu;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Configuration
 {
+	public static final short[] ENTITY_DICTIONARY;
 	public static final ForgeConfigSpec.BooleanValue REPAIR_COST;
 	public static final ForgeConfigSpec.BooleanValue ENCHANTMENT_COMPATIBILITY;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_BLASTPROTECTION;
@@ -34,6 +37,8 @@ public class Configuration
 	public static final ForgeConfigSpec.DoubleValue ENDER_SKELETON_PROBABILITY;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_EXPLOSION;
 	public static final ForgeConfigSpec SPECIFICATION;
+	public static final Trie ENTITY_ID_TRIE;
+	private static boolean ENTITY_ID_TRIE_SETUP = false;
 
 	public static boolean validateEntity(Object id)
 	{
@@ -64,8 +69,69 @@ public class Configuration
 		}
 	}
 
+	public static void entityID(String id)
+	{
+		Configuration.ENTITY_ID_TRIE.add(id.getBytes(StandardCharsets.UTF_8));
+	}
+
+	public static void setup()
+	{
+		if (Configuration.ENTITY_ID_TRIE_SETUP)
+			return;
+		Supernova.LOGGER.info("Constructing entity id trie");
+		Configuration.ENTITY_ID_TRIE.clear();
+		for (ResourceLocation eid : ForgeRegistries.ENTITY_TYPES.getKeys())
+		{
+			entityID(eid.toString());
+		}
+		Configuration.ENTITY_ID_TRIE_SETUP = true;
+	}
+
+	public static int searchEntityID(String prefix, byte[] str)
+	{
+		if (prefix.isEmpty())
+		{
+			String val = "minecraft:";
+			int len = Math.min(str.length, val.length());
+			System.arraycopy(val.getBytes(), 0, str, 0, len);
+			return len;
+		}
+
+		byte[] pfx = prefix.getBytes(StandardCharsets.UTF_8);
+		byte[] buf = new byte[str.length];
+		int slen = Configuration.ENTITY_ID_TRIE.search(pfx, 0, pfx.length, buf, 0, buf.length);
+		if (slen == -1)
+			return -1;
+
+		int cidx = -1;
+		for (int i = 0; (i < pfx.length) && (cidx == -1); i++)
+			if (pfx[i] == ':')
+				cidx = i;
+
+		int retVal = 0;
+		for (; retVal < Math.min(slen, str.length); retVal++)
+		{
+			str[retVal] = buf[retVal];
+			if (str[retVal] == ':')
+			{
+				retVal++;
+				break;
+			}
+		}
+		if (cidx != -1)
+		{
+			for (; retVal < Math.min(slen, str.length); retVal++)
+				str[retVal] = buf[retVal];
+		}
+		return retVal;
+	}
+
 	static
 	{
+		ENTITY_DICTIONARY = Trie.DEFAULT_DICTIONARY.clone();
+		ENTITY_DICTIONARY[':'] = 26;
+		ENTITY_DICTIONARY['_'] = 27;
+
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 		REPAIR_COST = builder
 			.comment("Whether or not enable repair cost")
@@ -122,5 +188,7 @@ public class Configuration
 			.comment("Entity in list explosion will not destroy blocks")
 			.defineListAllowEmpty("ENTITY_EXPLOSION", List.of("minecraft:creeper"), o -> true);
 		SPECIFICATION = builder.build();
+
+		ENTITY_ID_TRIE = new Trie(ENTITY_DICTIONARY);
 	}
 }

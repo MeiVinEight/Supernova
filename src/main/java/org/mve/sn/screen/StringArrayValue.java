@@ -19,6 +19,7 @@ public class StringArrayValue extends ConfigValue
 	private boolean expand = false;
 	public final ArrayList<StringEntry> value = new ArrayList<>();
 	private final Button addon;
+	private final byte[] buffer = new byte[4096];
 
 	public StringArrayValue(Screen screen, String key, Font font)
 	{
@@ -45,6 +46,12 @@ public class StringArrayValue extends ConfigValue
 			entry.value.setPosition(x, y);
 			entry.value.setWidth(this.boxWidth());
 			entry.value.setHeight(this.lineHeight);
+			int valLen = entry.value.getValue().length();
+			int hintLength = Configuration.searchEntityID(entry.value.getValue(), this.buffer);
+			if (hintLength > 0)
+				entry.value.setSuggestion(new String(this.buffer, valLen, hintLength - valLen));
+			else
+				entry.value.setSuggestion("");
 			y += this.lineHeight + ConfigMenu.PADDING;
 		}
 		this.addon.setPosition(x, y);

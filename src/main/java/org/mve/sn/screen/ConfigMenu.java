@@ -42,6 +42,7 @@ public class ConfigMenu extends Screen
 	public ConfigMenu(Screen parent)
 	{
 		super(Component.translatable("supernova.config.title"));
+		Configuration.setup();
 		this.parent = parent;
 		Minecraft mc = parent.getMinecraft();
 
