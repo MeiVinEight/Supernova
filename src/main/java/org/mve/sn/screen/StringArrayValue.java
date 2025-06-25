@@ -168,7 +168,7 @@ public class StringArrayValue extends ConfigValue
 			.build();
 		int x = this.previousX + this.indent + (2 * this.lineHeight) + ConfigMenu.PADDING;
 		int y = this.previousY + this.lineHeight + ConfigMenu.PADDING;
-		EditBox box = new EditBox(this.font, x, y, this.boxWidth(), this.lineHeight, Component.empty());
+		EditBox box = new EntityEdit(this.font, x, y, this.boxWidth(), this.lineHeight, Component.empty());
 		box.setValue(val);
 		box.setHighlightPos(0);
 		box.setCursorPosition(0);
