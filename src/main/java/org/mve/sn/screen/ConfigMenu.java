@@ -39,6 +39,8 @@ public class ConfigMenu extends Screen
 	public final GroupValue groupExplosion;
 	public final StringArrayValue explosion;
 	public final BooleanValue shiftAutoPickup;
+	public final BooleanValue superJump;
+	public final DoubleValue superJumpScale;
 
 	public ConfigMenu(Screen parent)
 	{
@@ -110,6 +112,14 @@ public class ConfigMenu extends Screen
 		this.shiftAutoPickup = new BooleanValue(this, "supernova.config.shift_auto_pickup", mc.font);
 		this.shiftAutoPickup.value = Configuration.SHIFT_AUTO_PICKUP.get();
 		this.shiftAutoPickup.tooltip = Component.translatable("supernova.config.shift_auto_pickup.tooltip");
+
+		this.superJump = new BooleanValue(this, "supernova.config.superjump", mc.font);
+		this.superJump.value = Configuration.SUPER_JUMP.get();
+
+		this.superJumpScale = new DoubleValue(this, "supernova.config.superjump.scale", mc.font);
+		this.superJumpScale.min = 1.0;
+		this.superJumpScale.max = Float.MAX_VALUE;
+		this.superJumpScale.value(Configuration.SUPER_JUMP_SCALE.get());
 	}
 
 	@Override
@@ -164,6 +174,8 @@ public class ConfigMenu extends Screen
 		array.push(this.groupExplosion);
 		array.push(this.explosion);
 		array.push(this.shiftAutoPickup);
+		array.push(this.superJump);
+		array.push(this.superJumpScale);
 		this.addRenderableWidget(array);
 	}
 
@@ -171,6 +183,7 @@ public class ConfigMenu extends Screen
 	public void render(GuiGraphics p_281549_, int p_281550_, int p_282878_, float p_282465_)
 	{
 		this.skeleton.active = this.enderbow.value;
+		this.superJumpScale.active = this.superJump.value;
 		this.renderBackground(p_281549_);
 		super.render(p_281549_, p_281550_, p_282878_, p_282465_);
 	}
@@ -222,6 +235,10 @@ public class ConfigMenu extends Screen
 		Configuration.ENTITY_EXPLOSION.save();
 		Configuration.SHIFT_AUTO_PICKUP.set(this.shiftAutoPickup.value);
 		Configuration.SHIFT_AUTO_PICKUP.save();
+		Configuration.SUPER_JUMP.set(this.superJump.value);
+		Configuration.SUPER_JUMP.save();
+		Configuration.SUPER_JUMP_SCALE.set(this.superJumpScale.value.doubleValue());
+		Configuration.SUPER_JUMP_SCALE.save();
 		Configuration.check();
 	}
 

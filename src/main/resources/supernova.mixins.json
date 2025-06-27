@@ -16,6 +16,7 @@
 		"ExplosionMixin",
 		"ItemStackMixin",
 		"LevelMixin",
+		"LivingEntityMixin",
 		"LootBonusEnchantmentMixin",
 		"ProjectileMixin",
 		"ProtectionEnchantmentMixin",

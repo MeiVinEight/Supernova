@@ -12,6 +12,8 @@
 	"supernova.config.entity.explosion.tooltip": "Explosions of entities in the list will not destroy blocks",
 	"supernova.config.shift_auto_pickup": "Shift auto pickup",
 	"supernova.config.shift_auto_pickup.tooltip": "Auto pickup item after destroy block when holding shift",
+	"supernova.config.superjump": "Super Jump",
+	"supernova.config.superjump.scale": "Super Jump sacle",
 	"supernova.config.group.enchantment": "ENCHANTMENT",
 	"supernova.config.group.enchantment.level": "ENCHANTMENT MAX LEVEL",
 	"supernova.config.group.enderbow": "ENDER BOW",

@@ -34,9 +34,11 @@ public class Configuration
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SWEEPING;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_UNBREAKING;
 	public static final ForgeConfigSpec.BooleanValue ENDER_BOW;
-	public static final ForgeConfigSpec.BooleanValue SHIFT_AUTO_PICKUP;
 	public static final ForgeConfigSpec.DoubleValue ENDER_SKELETON_PROBABILITY;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_EXPLOSION;
+	public static final ForgeConfigSpec.BooleanValue SHIFT_AUTO_PICKUP;
+	public static final ForgeConfigSpec.BooleanValue SUPER_JUMP;
+	public static final ForgeConfigSpec.DoubleValue SUPER_JUMP_SCALE;
 	public static final ForgeConfigSpec SPECIFICATION;
 	public static final Trie ENTITY_ID_TRIE;
 	private static boolean ENTITY_ID_TRIE_SETUP = false;
@@ -191,6 +193,12 @@ public class Configuration
 		SHIFT_AUTO_PICKUP = builder
 			.comment("Auto pickup item after destroy block when holding shift")
 			.define("SHIFT_AUTO_PICKUP", false);
+		SUPER_JUMP = builder
+			.comment("Jump higher when holding shift")
+			.define("SUPER_JUMP", false);
+		SUPER_JUMP_SCALE = builder
+			.comment("Y speed scale for super jump")
+			.defineInRange("SUPER_JUMP_SCALE", 2, 1, Float.MAX_VALUE);
 		SPECIFICATION = builder.build();
 
 		ENTITY_ID_TRIE = new Trie(ENTITY_DICTIONARY);
