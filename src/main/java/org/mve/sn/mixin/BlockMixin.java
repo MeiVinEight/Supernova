@@ -32,8 +32,8 @@ public class BlockMixin
 			"Lnet/minecraft/world/item/ItemStack;" +
 			"Z" +
 			")V",
-		remap = false
-		, cancellable = true
+		remap = false,
+		cancellable = true
 	)
 	private static void dropResources(
 		BlockState p_49882_,
