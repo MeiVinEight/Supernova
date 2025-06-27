@@ -14,9 +14,11 @@
 		"EnchantmentMixin",
 		"ExplosionMixin",
 		"ItemStackMixin",
+		"LevelMixin",
 		"LootBonusEnchantmentMixin",
 		"ProjectileMixin",
 		"ProtectionEnchantmentMixin",
+		"ServerLevelMixin",
 		"SweepingEdgeEnchantmentMixin",
 		"TridentLoyaltyEnchantmentMixin"
 	],
