@@ -38,6 +38,7 @@ public class ConfigMenu extends Screen
 	public final DoubleValue skeleton;
 	public final GroupValue groupExplosion;
 	public final StringArrayValue explosion;
+	public final BooleanValue shiftAutoPickup;
 
 	public ConfigMenu(Screen parent)
 	{
@@ -105,6 +106,10 @@ public class ConfigMenu extends Screen
 		this.explosion.defaultValue = ImmutableList.copyOf(Configuration.ENTITY_EXPLOSION.getDefault());
 		this.explosion.tooltip = Component.translatable("supernova.config.entity.explosion.tooltip");
 		this.groupExplosion.group.add(this.explosion);
+
+		this.shiftAutoPickup = new BooleanValue(this, "supernova.config.shift_auto_pickup", mc.font);
+		this.shiftAutoPickup.value = Configuration.SHIFT_AUTO_PICKUP.get();
+		this.shiftAutoPickup.tooltip = Component.translatable("supernova.config.shift_auto_pickup.tooltip");
 	}
 
 	@Override
@@ -158,6 +163,7 @@ public class ConfigMenu extends Screen
 		array.push(this.skeleton);
 		array.push(this.groupExplosion);
 		array.push(this.explosion);
+		array.push(this.shiftAutoPickup);
 		this.addRenderableWidget(array);
 	}
 
@@ -214,6 +220,8 @@ public class ConfigMenu extends Screen
 		Configuration.ENDER_SKELETON_PROBABILITY.save();
 		Configuration.ENTITY_EXPLOSION.set(this.explosion.value());
 		Configuration.ENTITY_EXPLOSION.save();
+		Configuration.SHIFT_AUTO_PICKUP.set(this.shiftAutoPickup.value);
+		Configuration.SHIFT_AUTO_PICKUP.save();
 		Configuration.check();
 	}
 

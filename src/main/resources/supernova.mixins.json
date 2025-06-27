@@ -9,6 +9,7 @@
 		"AnvilMenuMixin",
 		"ArrowDamageEnchantmentMixin",
 		"ArrowMixin",
+		"BlockMixin",
 		"DamageEnchantmentMixin",
 		"DigDurabilityEnchantmentMixin",
 		"EnchantmentMixin",
@@ -19,6 +20,7 @@
 		"ProjectileMixin",
 		"ProtectionEnchantmentMixin",
 		"ServerLevelMixin",
+		"ServerPlayerGameModeMixin",
 		"SweepingEdgeEnchantmentMixin",
 		"TridentLoyaltyEnchantmentMixin"
 	],

@@ -34,6 +34,7 @@ public class Configuration
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SWEEPING;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_UNBREAKING;
 	public static final ForgeConfigSpec.BooleanValue ENDER_BOW;
+	public static final ForgeConfigSpec.BooleanValue SHIFT_AUTO_PICKUP;
 	public static final ForgeConfigSpec.DoubleValue ENDER_SKELETON_PROBABILITY;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_EXPLOSION;
 	public static final ForgeConfigSpec SPECIFICATION;
@@ -187,6 +188,9 @@ public class Configuration
 		ENTITY_EXPLOSION = builder
 			.comment("Entity in list explosion will not destroy blocks")
 			.defineListAllowEmpty("ENTITY_EXPLOSION", List.of("minecraft:creeper"), o -> true);
+		SHIFT_AUTO_PICKUP = builder
+			.comment("Auto pickup item after destroy block when holding shift")
+			.define("SHIFT_AUTO_PICKUP", false);
 		SPECIFICATION = builder.build();
 
 		ENTITY_ID_TRIE = new Trie(ENTITY_DICTIONARY);

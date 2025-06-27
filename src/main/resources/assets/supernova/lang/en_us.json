@@ -10,6 +10,8 @@
 	"supernova.confug.ender.skeleton": "Probability for ender skeleton",
 	"supernova.config.entity.explosion": "Entity explosion",
 	"supernova.config.entity.explosion.tooltip": "Explosions of entities in the list will not destroy blocks",
+	"supernova.config.shift_auto_pickup": "Shift auto pickup",
+	"supernova.config.shift_auto_pickup.tooltip": "Auto pickup item after destroy block when holding shift",
 	"supernova.config.group.enchantment": "ENCHANTMENT",
 	"supernova.config.group.enchantment.level": "ENCHANTMENT MAX LEVEL",
 	"supernova.config.group.enderbow": "ENDER BOW",
