@@ -198,7 +198,7 @@ public class Configuration
 			.define("SUPER_JUMP", false);
 		SUPER_JUMP_SCALE = builder
 			.comment("Y speed scale for super jump")
-			.defineInRange("SUPER_JUMP_SCALE", 2, 1, Float.MAX_VALUE);
+			.defineInRange("SUPER_JUMP_SCALE", 1.5, 1, Float.MAX_VALUE);
 		SPECIFICATION = builder.build();
 
 		ENTITY_ID_TRIE = new Trie(ENTITY_DICTIONARY);
