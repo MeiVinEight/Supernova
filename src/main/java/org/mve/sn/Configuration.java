@@ -85,7 +85,14 @@ public class Configuration
 		Configuration.ENTITY_ID_TRIE.clear();
 		for (ResourceLocation eid : ForgeRegistries.ENTITY_TYPES.getKeys())
 		{
-			entityID(eid.toString());
+			try
+			{
+				entityID(eid.toString());
+			}
+			catch (Throwable e)
+			{
+				Supernova.LOGGER.warn("Cannot add entity ID: {}", eid, e);
+			}
 		}
 		Configuration.ENTITY_ID_TRIE_SETUP = true;
 	}
@@ -134,6 +141,8 @@ public class Configuration
 		ENTITY_DICTIONARY = Trie.DEFAULT_DICTIONARY.clone();
 		ENTITY_DICTIONARY[':'] = 26;
 		ENTITY_DICTIONARY['_'] = 27;
+		for (int i = 0; i < 10; i++)
+			ENTITY_DICTIONARY['0' + i] = (short) (28 + i);
 
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 		REPAIR_COST = builder
