@@ -17,5 +17,7 @@
 	"supernova.config.group.enchantment": "ENCHANTMENT",
 	"supernova.config.group.enchantment.level": "ENCHANTMENT MAX LEVEL",
 	"supernova.config.group.enderbow": "ENDER BOW",
-	"supernova.config.group.explosion": "ENTITY EXPLOSION"
+	"supernova.config.group.explosion": "ENTITY EXPLOSION",
+	"supernova.config.infinity_fix": "Infinity Fix",
+	"supernova.config.infinity_fix.tooltip": "Removes need to have an arrow in your inventory to use the Infinity enchant on your bow."
 }

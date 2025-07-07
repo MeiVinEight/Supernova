@@ -18,6 +18,7 @@
 		"LevelMixin",
 		"LivingEntityMixin",
 		"LootBonusEnchantmentMixin",
+		"PlayerMixin",
 		"ProjectileMixin",
 		"ProtectionEnchantmentMixin",
 		"ServerLevelMixin",

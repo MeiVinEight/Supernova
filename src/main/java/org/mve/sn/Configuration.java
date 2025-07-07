@@ -39,6 +39,7 @@ public class Configuration
 	public static final ForgeConfigSpec.BooleanValue SHIFT_AUTO_PICKUP;
 	public static final ForgeConfigSpec.BooleanValue SUPER_JUMP;
 	public static final ForgeConfigSpec.DoubleValue SUPER_JUMP_SCALE;
+	public static final ForgeConfigSpec.BooleanValue INFINITY_FIX;
 	public static final ForgeConfigSpec SPECIFICATION;
 	public static final Trie ENTITY_ID_TRIE;
 	private static boolean ENTITY_ID_TRIE_SETUP = false;
@@ -208,6 +209,9 @@ public class Configuration
 		SUPER_JUMP_SCALE = builder
 			.comment("Y speed scale for super jump")
 			.defineInRange("SUPER_JUMP_SCALE", 1.5, 1, Float.MAX_VALUE);
+		INFINITY_FIX = builder
+			.comment("Removes need to have an arrow in your inventory to use the Infinity enchant on your bow.")
+			.define("INFINITY_FIX", false);
 		SPECIFICATION = builder.build();
 
 		ENTITY_ID_TRIE = new Trie(ENTITY_DICTIONARY);

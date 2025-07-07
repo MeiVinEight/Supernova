@@ -41,6 +41,7 @@ public class ConfigMenu extends Screen
 	public final BooleanValue shiftAutoPickup;
 	public final BooleanValue superJump;
 	public final DoubleValue superJumpScale;
+	public final BooleanValue infinityFix;
 
 	public ConfigMenu(Screen parent)
 	{
@@ -120,6 +121,10 @@ public class ConfigMenu extends Screen
 		this.superJumpScale.min = 1.0;
 		this.superJumpScale.max = Float.MAX_VALUE;
 		this.superJumpScale.value(Configuration.SUPER_JUMP_SCALE.get());
+
+		this.infinityFix = new BooleanValue(this, "supernova.config.infinity_fix", mc.font);
+		this.infinityFix.tooltip = Component.translatable("supernova.config.infinity_fix.tooltip");
+		this.infinityFix.value = Configuration.INFINITY_FIX.get();
 	}
 
 	@Override
@@ -176,6 +181,7 @@ public class ConfigMenu extends Screen
 		array.push(this.shiftAutoPickup);
 		array.push(this.superJump);
 		array.push(this.superJumpScale);
+		array.push(this.infinityFix);
 		this.addRenderableWidget(array);
 	}
 
@@ -239,6 +245,8 @@ public class ConfigMenu extends Screen
 		Configuration.SUPER_JUMP.save();
 		Configuration.SUPER_JUMP_SCALE.set(this.superJumpScale.value.doubleValue());
 		Configuration.SUPER_JUMP_SCALE.save();
+		Configuration.INFINITY_FIX.set(this.infinityFix.value);
+		Configuration.INFINITY_FIX.save();
 		Configuration.check();
 	}
 
