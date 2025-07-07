@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import org.mve.sn.Configuration;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,6 +24,8 @@ public abstract class PlayerMixin extends Entity
 	@Inject(at = @At("RETURN"), method = "getProjectile(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;", cancellable = true)
 	public void getProjectile(ItemStack p_36349_, CallbackInfoReturnable<ItemStack> cir)
 	{
+		if (!Configuration.INFINITY_FIX.get())
+			return;
 		if (this.level().isClientSide())
 			return;
 		if (cir.getReturnValue() != null && !cir.getReturnValue().isEmpty())
