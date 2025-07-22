@@ -23,16 +23,9 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class EnderBow
 {
-	/**
-	 * [-7010448334308236634, 2339859691493267686]
-	 * <p>
-	 * [-1632247198, 89399974, 544791038, 129374438]
-	 */
-	public static final UUID UID = UUID.fromString("9EB5E262-0554-22A6-2078-D9FE07B618E6");
 	private static final MethodHandle PACK_PARTICLE;
 
 	public static void collision(Projectile entity, HitResult result)
@@ -41,7 +34,7 @@ public class EnderBow
 		if (entity.level().isClientSide()) return;
 		if (result.getType() == HitResult.Type.MISS) return;
 		if (!(entity instanceof Arrow)) return;
-		if (!EnderBow.UID.equals(((SupernovaArrow) entity).supernova())) return;
+		if (!Supernova.check(((SupernovaArrow) entity).supernova(), Supernova.SUPERNOVA_ENDERBOW)) return;
 
 		Entity owner = entity.getOwner();
 		if (owner == null) return;
@@ -70,11 +63,11 @@ public class EnderBow
 		if (!Configuration.ENDER_BOW.get()) return;
 		SupernovaArrow sna = (SupernovaArrow) arrow;
 		ItemStack stack = owner.getMainHandItem();
-		if (stack == null || stack.isEmpty()) return;
+		if (stack.isEmpty()) return;
 		if (!(stack.getItem() instanceof ProjectileWeaponItem)) stack = owner.getOffhandItem();
-		if (stack == null || stack.isEmpty()) return;
+		if (stack.isEmpty()) return;
 		if (stack.hasTag() && stack.getOrCreateTag().contains(Supernova.SUPERNOVA))
-			sna.supernova(stack.getOrCreateTag().getUUID(Supernova.SUPERNOVA));
+			sna.supernova(stack.getOrCreateTag().getIntArray(Supernova.SUPERNOVA));
 	}
 
 	private static void teleport(ServerLevel world, Entity entity, Vec3 pos)

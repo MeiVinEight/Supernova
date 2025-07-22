@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public interface SupernovaArrow
 {
-	public UUID supernova();
-	public void supernova(UUID uuid);
+	public int[] supernova();
+	public void supernova(int[] supernova);
 }

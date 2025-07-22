@@ -17,6 +17,7 @@ public class Supernova
 	// Directly reference a slf4j logger
 	public static final Logger LOGGER = LoggerFactory.getLogger("Supernova");
 	public static final ConfigScreenHandler.ConfigScreenFactory CONFIG_SCREEN_FACTORY = new ConfigScreenHandler.ConfigScreenFactory(Configuration::screen);
+	public static final int SUPERNOVA_ENDERBOW      = 0;
 
 	public Supernova(FMLJavaModLoadingContext context)
 	{
@@ -30,5 +31,27 @@ public class Supernova
 	{
 		// Do something when the server starts
 		LOGGER.info("Supernova starting");
+	}
+
+	public static boolean check(int[] arr, int tag)
+	{
+		if (arr == null)
+			return false;
+		for (int j : arr)
+			if (j == tag)
+				return true;
+		return false;
+	}
+
+	public static int[] add(int[] arr, int tag)
+	{
+		int len = 0;
+		if (arr != null)
+			len = arr.length;
+		int[] ret = new int[len + 1];
+		if (arr != null)
+			System.arraycopy(arr, 0, ret, 0, len);
+		ret[len] = tag;
+		return ret;
 	}
 }

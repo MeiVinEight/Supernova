@@ -1,12 +1,12 @@
 package org.mve.sn.mixin;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.mve.sn.Configuration;
-import org.mve.sn.EnderBow;
 import org.mve.sn.Supernova;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +27,7 @@ public class AbstractSkeletonMixin
 		if (item == null || item.isEmpty()) return;
 		if (item.getItem() != Items.BOW) return;
 
-		item.getOrCreateTag().putUUID(Supernova.SUPERNOVA, EnderBow.UID);
+		CompoundTag tag = item.getOrCreateTag();
+		tag.putIntArray(Supernova.SUPERNOVA, Supernova.add(tag.getIntArray(Supernova.SUPERNOVA), Supernova.SUPERNOVA_ENDERBOW));
 	}
 }
