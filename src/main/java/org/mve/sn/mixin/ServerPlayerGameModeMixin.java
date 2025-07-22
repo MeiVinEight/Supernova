@@ -1,7 +1,6 @@
 package org.mve.sn.mixin;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.sounds.SoundEvent;
@@ -10,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import org.mve.sn.Configuration;
+import org.mve.sn.Sounds;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,15 +34,14 @@ public class ServerPlayerGameModeMixin
 			return;
 		ServerPlayerGameMode _this = (ServerPlayerGameMode) (Object) this;
 		ServerPlayer player = _this.player;
-		ServerLevel level = _this.level;
 		if (player.isShiftKeyDown())
 		{
 			player.giveExperiencePoints(exp);
-			RandomSource random = _this.player.random;
+			RandomSource random = Sounds.RANDOM;
 			//_this.player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
 			SoundEvent sound = SoundEvents.EXPERIENCE_ORB_PICKUP;
 			float pitch = (random.nextFloat() - random.nextFloat()) * 0.35F + 0.9F;
-			level.playSound(null, player.getX(), player.getY() + 1, player.getZ(), sound, SoundSource.PLAYERS, 0.2F, pitch);
+			Sounds.play(player, sound, SoundSource.PLAYERS, 0.5F, pitch);
 			cir.setReturnValue(true);
 		}
 	}
