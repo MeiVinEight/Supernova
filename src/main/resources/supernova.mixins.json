@@ -24,7 +24,8 @@
 		"ServerLevelMixin",
 		"ServerPlayerGameModeMixin",
 		"SweepingEdgeEnchantmentMixin",
-		"TridentLoyaltyEnchantmentMixin"
+		"TridentLoyaltyEnchantmentMixin",
+		"TridentRiptideEnchantmentMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -30,6 +30,7 @@ public class ConfigMenu extends Screen
 	public final LongValue power;
 	public final LongValue projectilepro;
 	public final LongValue protection;
+	public final LongValue riptide;
 	public final LongValue sharpness;
 	public final LongValue sweeping;
 	public final LongValue unbreaking;
@@ -72,6 +73,7 @@ public class ConfigMenu extends Screen
 		this.power = ConfigMenu.createEnchantment(this, "enchantment.minecraft.power", mc.font, Configuration.MAX_LEVEL_POWER);
 		this.projectilepro = ConfigMenu.createEnchantment(this, "enchantment.minecraft.projectile_protection", mc.font, Configuration.MAX_LEVEL_PROJECTILEPROTECTION);
 		this.protection = ConfigMenu.createEnchantment(this, "enchantment.minecraft.protection", mc.font, Configuration.MAX_LEVEL_PROTECTION);
+		this.riptide = ConfigMenu.createEnchantment(this, "enchantment.minecraft.riptide", mc.font, Configuration.MAX_LEVEL_RIPTIDE);
 		this.sharpness = ConfigMenu.createEnchantment(this, "enchantment.minecraft.sharpness", mc.font, Configuration.MAX_LEVEL_SHARPNESS);
 		this.sweeping = ConfigMenu.createEnchantment(this, "enchantment.minecraft.sweeping", mc.font, Configuration.MAX_LEVEL_SWEEPING);
 		this.unbreaking = ConfigMenu.createEnchantment(this, "enchantment.minecraft.unbreaking", mc.font, Configuration.MAX_LEVEL_UNBREAKING);
@@ -85,6 +87,7 @@ public class ConfigMenu extends Screen
 		this.groupLevel.group.add(this.power);
 		this.groupLevel.group.add(this.projectilepro);
 		this.groupLevel.group.add(this.protection);
+		this.groupLevel.group.add(this.riptide);
 		this.groupLevel.group.add(this.sharpness);
 		this.groupLevel.group.add(this.sweeping);
 		this.groupLevel.group.add(this.unbreaking);
@@ -170,6 +173,7 @@ public class ConfigMenu extends Screen
 		array.push(this.power);
 		array.push(this.projectilepro);
 		array.push(this.protection);
+		array.push(this.riptide);
 		array.push(this.sharpness);
 		array.push(this.sweeping);
 		array.push(this.unbreaking);
@@ -227,6 +231,8 @@ public class ConfigMenu extends Screen
 		Configuration.MAX_LEVEL_PROJECTILEPROTECTION.save();
 		Configuration.MAX_LEVEL_PROTECTION.set(this.protection.value.intValue());
 		Configuration.MAX_LEVEL_PROTECTION.save();
+		Configuration.MAX_LEVEL_RIPTIDE.set(this.riptide.value.intValue());
+		Configuration.MAX_LEVEL_RIPTIDE.save();
 		Configuration.MAX_LEVEL_SHARPNESS.set(this.sharpness.value.intValue());
 		Configuration.MAX_LEVEL_SHARPNESS.save();
 		Configuration.MAX_LEVEL_SWEEPING.set(this.sweeping.value.intValue());

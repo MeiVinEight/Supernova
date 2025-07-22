@@ -32,6 +32,7 @@ public class Configuration
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_PROTECTION;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SHARPNESS;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_SWEEPING;
+	public static final ForgeConfigSpec.IntValue MAX_LEVEL_RIPTIDE;
 	public static final ForgeConfigSpec.IntValue MAX_LEVEL_UNBREAKING;
 	public static final ForgeConfigSpec.BooleanValue ENDER_BOW;
 	public static final ForgeConfigSpec.DoubleValue ENDER_SKELETON_PROBABILITY;
@@ -188,6 +189,9 @@ public class Configuration
 		MAX_LEVEL_SWEEPING = builder
 			.comment("Max level of sweeping")
 			.defineInRange("MAX_LEVEL_SWEEPING", 3, 1, 255);
+		MAX_LEVEL_RIPTIDE = builder
+			.comment("Max level of trident")
+			.defineInRange("MAX_LEVEL_TRIDENT", 3, 1, 255);
 		MAX_LEVEL_UNBREAKING = builder
 			.comment("Max level of unbreaking")
 			.defineInRange("MAX_LEVEL_UNBREAKING", 3, 1, 255);
