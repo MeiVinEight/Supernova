@@ -37,7 +37,8 @@ public class Configuration
 	public static final ForgeConfigSpec.BooleanValue ENDER_BOW;
 	public static final ForgeConfigSpec.DoubleValue ENDER_SKELETON_PROBABILITY;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_EXPLOSION;
-	public static final ForgeConfigSpec.BooleanValue SHIFT_AUTO_PICKUP;
+	public static final ForgeConfigSpec.BooleanValue DIGGER_PICKUP;
+	public static final ForgeConfigSpec.BooleanValue KILLER_PICKUP;
 	public static final ForgeConfigSpec.BooleanValue SUPER_JUMP;
 	public static final ForgeConfigSpec.DoubleValue SUPER_JUMP_SCALE;
 	public static final ForgeConfigSpec.BooleanValue INFINITY_FIX;
@@ -204,9 +205,12 @@ public class Configuration
 		ENTITY_EXPLOSION = builder
 			.comment("Entity in list explosion will not destroy blocks")
 			.defineListAllowEmpty("ENTITY_EXPLOSION", List.of("minecraft:creeper"), o -> true);
-		SHIFT_AUTO_PICKUP = builder
+		DIGGER_PICKUP = builder
 			.comment("Auto pickup item after destroy block when holding shift")
-			.define("SHIFT_AUTO_PICKUP", false);
+			.define("DIGGER_PICKUP", false);
+		KILLER_PICKUP = builder
+			.comment("Auto pickup entity loots after kill entity")
+			.define("KILLER_PICKUP", false);
 		SUPER_JUMP = builder
 			.comment("Jump higher when holding shift")
 			.define("SUPER_JUMP", false);

@@ -146,6 +146,12 @@ repositories {
 	// flatDir {
 	//     dir 'libs'
 	// }
+	maven {
+		url 'https://maven.aliyun.com/nexus/content/groups/public'
+	}
+	maven {
+		url 'https://repository.hanbings.io/proxy'
+	}
 }
 
 dependencies {

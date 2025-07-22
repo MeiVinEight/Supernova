@@ -30,7 +30,7 @@ public class ServerPlayerGameModeMixin
 	)
 	public void destroyBlock(BlockPos p_9281_, CallbackInfoReturnable<Boolean> cir, BlockState blockstate, int exp)
 	{
-		if (!Configuration.SHIFT_AUTO_PICKUP.get())
+		if (!Configuration.DIGGER_PICKUP.get())
 			return;
 		ServerPlayerGameMode _this = (ServerPlayerGameMode) (Object) this;
 		ServerPlayer player = _this.player;

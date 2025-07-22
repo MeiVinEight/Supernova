@@ -1,5 +1,6 @@
 package org.mve.sn;
 
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -18,6 +19,7 @@ public class Supernova
 	public static final Logger LOGGER = LoggerFactory.getLogger("Supernova");
 	public static final ConfigScreenHandler.ConfigScreenFactory CONFIG_SCREEN_FACTORY = new ConfigScreenHandler.ConfigScreenFactory(Configuration::screen);
 	public static final int SUPERNOVA_ENDERBOW      = 0;
+	public static final int SUPERNOVA_KILLER_PICKUP = 1;
 
 	public Supernova(FMLJavaModLoadingContext context)
 	{
@@ -53,5 +55,10 @@ public class Supernova
 			System.arraycopy(arr, 0, ret, 0, len);
 		ret[len] = tag;
 		return ret;
+	}
+
+	public static boolean check(ItemStack item, int tag)
+	{
+		return item.hasTag() && Supernova.check(item.getOrCreateTag().getIntArray(Supernova.SUPERNOVA), tag);
 	}
 }

@@ -39,7 +39,8 @@ public class ConfigMenu extends Screen
 	public final DoubleValue skeleton;
 	public final GroupValue groupExplosion;
 	public final StringArrayValue explosion;
-	public final BooleanValue shiftAutoPickup;
+	public final BooleanValue pickupDigger;
+	public final BooleanValue pickupKiller;
 	public final BooleanValue superJump;
 	public final DoubleValue superJumpScale;
 	public final BooleanValue infinityFix;
@@ -113,9 +114,13 @@ public class ConfigMenu extends Screen
 		this.explosion.tooltip = Component.translatable("supernova.config.entity.explosion.tooltip");
 		this.groupExplosion.group.add(this.explosion);
 
-		this.shiftAutoPickup = new BooleanValue(this, "supernova.config.shift_auto_pickup", mc.font);
-		this.shiftAutoPickup.value = Configuration.SHIFT_AUTO_PICKUP.get();
-		this.shiftAutoPickup.tooltip = Component.translatable("supernova.config.shift_auto_pickup.tooltip");
+		this.pickupDigger = new BooleanValue(this, "supernova.config.digger.pickup", mc.font);
+		this.pickupDigger.value = Configuration.DIGGER_PICKUP.get();
+		this.pickupDigger.tooltip = Component.translatable("supernova.config.digger.pickup.tooltip");
+
+		this.pickupKiller = new BooleanValue(this, "supernova.config.killer.pickup", mc.font);
+		this.pickupKiller.value = Configuration.KILLER_PICKUP.get();
+		this.pickupKiller.tooltip = Component.translatable("supernova.config.killer.pickup.tooltip");
 
 		this.superJump = new BooleanValue(this, "supernova.config.superjump", mc.font);
 		this.superJump.value = Configuration.SUPER_JUMP.get();
@@ -182,7 +187,8 @@ public class ConfigMenu extends Screen
 		array.push(this.skeleton);
 		array.push(this.groupExplosion);
 		array.push(this.explosion);
-		array.push(this.shiftAutoPickup);
+		array.push(this.pickupDigger);
+		array.push(this.pickupKiller);
 		array.push(this.superJump);
 		array.push(this.superJumpScale);
 		array.push(this.infinityFix);
@@ -245,8 +251,10 @@ public class ConfigMenu extends Screen
 		Configuration.ENDER_SKELETON_PROBABILITY.save();
 		Configuration.ENTITY_EXPLOSION.set(this.explosion.value());
 		Configuration.ENTITY_EXPLOSION.save();
-		Configuration.SHIFT_AUTO_PICKUP.set(this.shiftAutoPickup.value);
-		Configuration.SHIFT_AUTO_PICKUP.save();
+		Configuration.DIGGER_PICKUP.set(this.pickupDigger.value);
+		Configuration.DIGGER_PICKUP.save();
+		Configuration.KILLER_PICKUP.set(this.pickupKiller.value);
+		Configuration.KILLER_PICKUP.save();
 		Configuration.SUPER_JUMP.set(this.superJump.value);
 		Configuration.SUPER_JUMP.save();
 		Configuration.SUPER_JUMP_SCALE.set(this.superJumpScale.value.doubleValue());

@@ -46,7 +46,7 @@ public class BlockMixin
 		CallbackInfo ci
 	)
 	{
-		if (!Configuration.SHIFT_AUTO_PICKUP.get())
+		if (!Configuration.DIGGER_PICKUP.get())
 			return;
 		if (!(p_49883_ instanceof ServerLevel))
 			return;
