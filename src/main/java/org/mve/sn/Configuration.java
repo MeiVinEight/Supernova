@@ -53,13 +53,6 @@ public class Configuration
 		return ForgeRegistries.ENTITY_TYPES.containsKey(ResourceLocation.tryParse((String) id));
 	}
 
-	public static Screen screen(Minecraft mc, Screen screen)
-	{
-		ConfigMenu configScreen = new ConfigMenu(screen);
-		mc.pushGuiLayer(configScreen);
-		return configScreen;
-	}
-
 	@SubscribeEvent
 	public static void onConfig(ModConfigEvent event)
 	{
