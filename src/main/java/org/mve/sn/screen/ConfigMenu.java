@@ -44,6 +44,7 @@ public class ConfigMenu extends Screen
 	public final BooleanValue superJump;
 	public final DoubleValue superJumpScale;
 	public final BooleanValue infinityFix;
+	public final BooleanValue ESCAPE_ALLOWED;
 
 	public ConfigMenu(Screen parent)
 	{
@@ -133,6 +134,10 @@ public class ConfigMenu extends Screen
 		this.infinityFix = new BooleanValue(this, "supernova.config.infinity_fix", mc.font);
 		this.infinityFix.tooltip = Component.translatable("supernova.config.infinity_fix.tooltip");
 		this.infinityFix.value = Configuration.INFINITY_FIX.get();
+
+		this.ESCAPE_ALLOWED = new BooleanValue(this, "supernova.config.escape.allowed", mc.font);
+		this.ESCAPE_ALLOWED.tooltip = Component.translatable("supernova.config.escape.allowed.tooltip");
+		this.infinityFix.value = Configuration.INFINITY_FIX.get();
 	}
 
 	@Override
@@ -192,6 +197,7 @@ public class ConfigMenu extends Screen
 		array.push(this.superJump);
 		array.push(this.superJumpScale);
 		array.push(this.infinityFix);
+		array.push(this.ESCAPE_ALLOWED);
 		this.addRenderableWidget(array);
 	}
 
@@ -261,6 +267,8 @@ public class ConfigMenu extends Screen
 		Configuration.SUPER_JUMP_SCALE.save();
 		Configuration.INFINITY_FIX.set(this.infinityFix.value);
 		Configuration.INFINITY_FIX.save();
+		Configuration.ESCAPE_ALLOWED.set(this.ESCAPE_ALLOWED.value);
+		Configuration.ESCAPE_ALLOWED.save();
 		Configuration.check();
 	}
 

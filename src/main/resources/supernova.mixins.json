@@ -23,6 +23,7 @@
 		"ProtectionEnchantmentMixin",
 		"ServerLevelMixin",
 		"ServerPlayerGameModeMixin",
+		"SharedConstantsMixin",
 		"SweepingEdgeEnchantmentMixin",
 		"TridentLoyaltyEnchantmentMixin",
 		"TridentRiptideEnchantmentMixin"

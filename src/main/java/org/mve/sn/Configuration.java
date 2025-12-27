@@ -42,6 +42,7 @@ public class Configuration
 	public static final ForgeConfigSpec.BooleanValue SUPER_JUMP;
 	public static final ForgeConfigSpec.DoubleValue SUPER_JUMP_SCALE;
 	public static final ForgeConfigSpec.BooleanValue INFINITY_FIX;
+	public static final ForgeConfigSpec.BooleanValue ESCAPE_ALLOWED;
 	public static final ForgeConfigSpec SPECIFICATION;
 	public static final Trie ENTITY_ID_TRIE;
 	private static boolean ENTITY_ID_TRIE_SETUP = false;
@@ -213,6 +214,9 @@ public class Configuration
 		INFINITY_FIX = builder
 			.comment("Removes need to have an arrow in your inventory to use the Infinity enchant on your bow.")
 			.define("INFINITY_FIX", false);
+		ESCAPE_ALLOWED = builder
+			.comment("Allow color char § in chat")
+			.define("ESCAPE_ALLOWED", false);
 		SPECIFICATION = builder.build();
 
 		ENTITY_ID_TRIE = new Trie(ENTITY_DICTIONARY);
