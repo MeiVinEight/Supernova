@@ -4,9 +4,12 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"AbstractSkeletonEntityMixin",
-		"AnvilScreenHandlerMixin",
+		"AnvilMenuMixin",
+		"EntityMixin",
 		"ItemStackMixin",
-		"PersistentProjectileEntityMixin"
+		"PersistentProjectileEntityMixin",
+		"ProjectileMixin",
+		"ServerPlayerGameModeMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

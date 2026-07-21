@@ -1,5 +1,17 @@
+buildscript {
+	repositories {
+		// Add repositories to retrieve artifacts from in here.
+		// You should only use this when depending on other mods because
+		// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+		// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+		// for more information about repositories.
+		maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+		maven { url 'https://repository.hanbings.io/proxy' }
+	}
+}
+
 plugins {
-	id 'fabric-loom' version '1.9-SNAPSHOT'
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -16,12 +28,11 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	maven {
-		url 'https://maven.aliyun.com/nexus/content/groups/public'
-	}
-	maven {
-		url 'https://repository.hanbings.io/proxy'
-	}
+	maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+	maven { url 'https://repository.hanbings.io/proxy' }
+	maven { url 'https://cursemaven.com' }
+	maven { url 'https://api.modrinth.com/maven' }
+	flatDir { dir "libs" }
 }
 
 loom {
@@ -38,21 +49,29 @@ loom {
 }
 
 dependencies {
+	implementation 'com.electronwill.night-config:core:3.6.3'
+	implementation 'com.electronwill.night-config:toml:3.6.3'
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation 'maven.modrinth:forge-config-api-port:v21.1.6-1.21.1-Fabric'
+	modImplementation "maven.modrinth:modmenu:11.0.1"
+	modImplementation "maven.modrinth:placeholder-api:2.4.2+1.21"
+	modImplementation ":core:3.8.0"
+	modImplementation ":toml:3.8.0"
 
 }
 
 processResources {
-	inputs.property "version", project.version
+	def version = project.version
+	inputs.property "version", version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": version
 	}
 }
 
