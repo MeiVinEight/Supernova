@@ -10,6 +10,7 @@
 		"EntityMixin",
 		"ItemStackMixin",
 		"PersistentProjectileEntityMixin",
+		"PlayerMixin",
 		"ProjectileMixin",
 		"ServerPlayerGameModeMixin",
 		"StringUtilMixin"
