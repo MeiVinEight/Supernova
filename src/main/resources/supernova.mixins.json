@@ -5,6 +5,8 @@
 	"mixins": [
 		"AbstractSkeletonEntityMixin",
 		"AnvilMenuMixin",
+		"BlockMixin",
+		"DropExperienceBlockAccessor",
 		"EntityMixin",
 		"ItemStackMixin",
 		"PersistentProjectileEntityMixin",
