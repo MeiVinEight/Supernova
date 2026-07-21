@@ -9,7 +9,8 @@
 		"ItemStackMixin",
 		"PersistentProjectileEntityMixin",
 		"ProjectileMixin",
-		"ServerPlayerGameModeMixin"
+		"ServerPlayerGameModeMixin",
+		"StringUtilMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
