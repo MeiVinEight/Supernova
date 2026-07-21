@@ -2,11 +2,6 @@ package org.mve.sn;
 
 import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,24 +10,6 @@ public class Supernova implements ModInitializer
 {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Supernova");
 	public static final String SUPERNOVA = "supernova";
-	public static final DataComponentType<int[]> DATA_SUPERNOVA = Registry.register(
-		BuiltInRegistries.DATA_COMPONENT_TYPE,
-		Supernova.SUPERNOVA,
-		DataComponentType.<int[]>builder().networkSynchronized(new StreamCodec<>()
-		{
-			@Override
-			public int[] decode(RegistryFriendlyByteBuf object)
-			{
-				return object.readVarIntArray();
-			}
-
-			@Override
-			public void encode(RegistryFriendlyByteBuf object, int[] object2)
-			{
-				object.writeVarIntArray(object2);
-			}
-		}).cacheEncoding().build()
-	);
 	public static final int SUPERNOVA_ENDERBOW = 0;
 
 

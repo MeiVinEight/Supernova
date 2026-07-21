@@ -1,5 +1,6 @@
 package org.mve.sn;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -10,10 +11,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -69,8 +70,9 @@ public class EnderBow
 		if (stack.isEmpty()) return;
 		if (!(stack.getItem() instanceof ProjectileWeaponItem)) stack = living.getOffhandItem();
 		if (stack.isEmpty()) return;
-		if (stack.getComponents().has(Supernova.DATA_SUPERNOVA))
-			sna.supernova(stack.getComponents().get(Supernova.DATA_SUPERNOVA));
+		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+		if (data == null) return;
+		sna.supernova(data.copyTag().getIntArray(Supernova.SUPERNOVA));
 	}
 
 	private static void teleport(ServerLevel world, Entity entity, Vec3 pos)

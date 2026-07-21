@@ -1,10 +1,12 @@
 package org.mve.sn.mixin;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import org.mve.sn.Configuration;
 import org.mve.sn.Supernova;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,6 +30,8 @@ public class AbstractSkeletonEntityMixin
 		if (item.getItem() != Items.BOW) return;
 
 		int[] supernova = new int[]{Supernova.SUPERNOVA_ENDERBOW};
-		item.set(Supernova.DATA_SUPERNOVA, supernova);
+		CustomData newData = item.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY)
+			.update(tag -> tag.putIntArray(Supernova.SUPERNOVA, supernova));
+		item.set(DataComponents.CUSTOM_DATA, newData);
 	}
 }
