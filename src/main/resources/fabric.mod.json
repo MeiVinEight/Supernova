@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "supernova",
-	"version": "${version}",
+	"version": "1.0.0",
 	"name": "Supernova",
 	"description": "Welcome to §b§lSupernova",
 	"authors":
