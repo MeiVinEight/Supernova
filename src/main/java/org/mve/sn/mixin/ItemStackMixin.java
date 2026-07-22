@@ -17,7 +17,7 @@ public abstract class ItemStackMixin
 	{
 		ItemStack _this = (ItemStack) (Object) this;
 		if (type == DataComponents.REPAIR_COST) return 0;
-		if (type == DataComponents.DAMAGE && Items.ELYTRA.equals(_this.getItem())) return 0;
+		//if (type == DataComponents.DAMAGE && Items.ELYTRA.equals(_this.getItem())) return 0;
 		return value;
 	}
 }
