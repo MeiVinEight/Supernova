@@ -63,6 +63,7 @@ dependencies {
 	modImplementation "maven.modrinth:placeholder-api:2.4.2+1.21"
 	modImplementation ":core:3.8.0"
 	modImplementation ":toml:3.8.0"
+	modImplementation ":kiwi:15.8.7"
 
 }
 

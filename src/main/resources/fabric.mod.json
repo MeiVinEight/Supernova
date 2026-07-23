@@ -22,11 +22,18 @@
 		"main":
 		[
 			"org.mve.sn.Supernova"
+		],
+		"client": [
+			"org.mve.sn.client.SupernovaClient"
 		]
 	},
 	"mixins":
 	[
-		"supernova.mixins.json"
+		"supernova.mixins.json",
+		{
+			"config": "supernova.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"depends":
 	{
