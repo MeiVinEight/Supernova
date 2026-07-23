@@ -3,12 +3,13 @@ package org.mve.sn;
 import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,14 @@ public class Supernova implements ModInitializer
 	public static final Logger LOGGER = LoggerFactory.getLogger("Supernova");
 	public static final String SUPERNOVA = "supernova";
 	public static final String ATTR_NAME_GLIDABLE = "glidable";
+	public static final ResourceLocation RESOURCE_GLIDABLE = ResourceLocation.fromNamespaceAndPath(Supernova.SUPERNOVA, Supernova.ATTR_NAME_GLIDABLE);
 	public static final int SUPERNOVA_ENDERBOW = 0;
+	public static final Holder<Attribute> ATRIBUTE_GLIDABLE = Registry.registerForHolder(
+		BuiltInRegistries.ATTRIBUTE,
+		RESOURCE_GLIDABLE,
+		new RangedAttribute("attribute." + RESOURCE_GLIDABLE.toLanguageKey(), 0, 0, 1)
+			.setSyncable(true)
+	);
 
 
 	@Override
@@ -49,14 +57,10 @@ public class Supernova implements ModInitializer
 		return ret;
 	}
 
-	public static boolean gliding(Level level, ItemStack item)
+	public static boolean gliding(LivingEntity entity)
 	{
-		Holder<Enchantment> gliding = level
-			.registryAccess()
-			.lookupOrThrow(Registries.ENCHANTMENT)
-			.get(ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath("minecraft", "gliding")))
-			.orElse(null);
-		if (gliding == null) return false;
-		return item.getEnchantments().getLevel(gliding) > 0;
+		AttributeInstance attribute = entity.getAttribute(Supernova.ATRIBUTE_GLIDABLE);
+		if (attribute == null) return false;
+		return attribute.getValue() > 0;
 	}
 }
