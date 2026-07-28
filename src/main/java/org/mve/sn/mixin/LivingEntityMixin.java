@@ -1,11 +1,16 @@
 package org.mve.sn.mixin;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.mve.sn.Supernova;
@@ -50,12 +55,19 @@ public abstract class LivingEntityMixin extends Entity
 				int j = i / 10;
 				if (j % 2 == 0)
 				{
-					EquipmentSlot[] slots = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
-					for (EquipmentSlot slot : slots)
+					Holder.Reference<Enchantment> gliding = living.level()
+						.registryAccess()
+						.lookupOrThrow(Registries.ENCHANTMENT)
+						.get(ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.withDefaultNamespace("gliding")))
+						.orElse(null);
+					if (gliding != null)
 					{
-						ItemStack stack;
-						if (!(stack = this.getItemBySlot(slot)).isEmpty())
+						EquipmentSlot[] slots = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+						for (EquipmentSlot slot : slots)
 						{
+							ItemStack stack = this.getItemBySlot(slot);
+							if (stack.isEmpty()) continue;
+							if (stack.getEnchantments().getLevel(gliding) == 0) continue;
 							stack.hurtAndBreak(1, living, slot);
 							break;
 						}
