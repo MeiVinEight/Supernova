@@ -39,7 +39,7 @@ public abstract class LivingEntityMixin extends Entity
 	public void updateFallFlying$is0(CallbackInfo ci)
 	{
 		LivingEntity living = (LivingEntity) (Object) this;
-		if (!Supernova.gliding(living)) return;
+		if (!Supernova.glidable(living)) return;
 		ci.cancel();
 		int i = living.getFallFlyingTicks() + 1;
 		if (!living.level().isClientSide)

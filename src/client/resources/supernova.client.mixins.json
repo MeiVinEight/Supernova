@@ -3,7 +3,8 @@
 	"package": "org.mve.sn.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"ItemStackMixin"
+		"ItemStackMixin",
+		"LocalPlayerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
