@@ -3,6 +3,8 @@ package org.mve.sn.mixin;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -12,12 +14,14 @@ import net.minecraft.world.phys.Vec3;
 import org.mve.sn.Configuration;
 import org.mve.sn.KeyboardHandler;
 import org.mve.sn.Supernova;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -26,6 +30,12 @@ public abstract class PlayerMixin implements KeyboardHandler
 {
 	@Shadow
 	public abstract void startFallFlying();
+
+	@Shadow
+	public abstract boolean isCreative();
+
+	@Shadow
+	public abstract boolean isSpectator();
 
 	@Unique
 	private boolean keyUp = false;
@@ -76,6 +86,21 @@ public abstract class PlayerMixin implements KeyboardHandler
 	public void aiStep0(CallbackInfo ci)
 	{
 		this.supernova$gliding();
+		Player player = (Player) (Object) this;
+		if (player.level().isClientSide) return;
+		double attrFly = player.getAttributes().getValue(Supernova.ATTRIBUTE_FLYING);
+		boolean mayfly = player.getAbilities().mayfly;
+		if ((attrFly > 0) && (!mayfly))
+		{
+			player.getAbilities().mayfly = true;
+			player.onUpdateAbilities();
+		}
+		else if ((attrFly <= 0) && mayfly)
+		{
+			player.getAbilities().mayfly = false;
+			player.getAbilities().flying = false;
+			player.onUpdateAbilities();
+		}
 	}
 
 	@ModifyArg(
@@ -90,6 +115,29 @@ public abstract class PlayerMixin implements KeyboardHandler
 	{
 		if (this.keyClimbing()) return Pose.SWIMMING;
 		return par1;
+	}
+
+	@Inject(
+		method = "createAttributes",
+		at = @At("RETURN")
+	)
+	private static void createAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir)
+	{
+		cir.getReturnValue().add(Supernova.ATTRIBUTE_FLYING);
+	}
+
+	@Redirect(
+		method = "causeFallDamage",
+		at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/world/entity/player/Abilities;mayfly:Z",
+			ordinal = 0,
+			opcode = Opcodes.GETFIELD
+		)
+	)
+	public boolean causeFallDamage$mayfly(Abilities abilities)
+	{
+		return abilities.mayfly && (this.isCreative() || this.isSpectator());
 	}
 
 	@Override

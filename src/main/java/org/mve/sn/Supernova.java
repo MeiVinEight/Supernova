@@ -22,12 +22,20 @@ public class Supernova implements ModInitializer
 	public static final Logger LOGGER = LoggerFactory.getLogger("Supernova");
 	public static final String SUPERNOVA = "supernova";
 	public static final String ATTR_NAME_GLIDABLE = "glidable";
+	public static final String ATTR_NAME_FLYING = "flying";
 	public static final ResourceLocation RESOURCE_GLIDABLE = ResourceLocation.fromNamespaceAndPath(Supernova.SUPERNOVA, Supernova.ATTR_NAME_GLIDABLE);
+	public static final ResourceLocation RESOURCE_FLYING = ResourceLocation.fromNamespaceAndPath(Supernova.SUPERNOVA, Supernova.ATTR_NAME_FLYING);
 	public static final int SUPERNOVA_ENDERBOW = 0;
 	public static final Holder<Attribute> ATRIBUTE_GLIDABLE = Registry.registerForHolder(
 		BuiltInRegistries.ATTRIBUTE,
 		RESOURCE_GLIDABLE,
 		new RangedAttribute("attribute." + RESOURCE_GLIDABLE.toLanguageKey(), 0, 0, 1)
+			.setSyncable(true)
+	);
+	public static final Holder<Attribute> ATTRIBUTE_FLYING = Registry.registerForHolder(
+		BuiltInRegistries.ATTRIBUTE,
+		RESOURCE_FLYING,
+		new RangedAttribute("attribute." + RESOURCE_FLYING.toLanguageKey(), 0, 0, 1)
 			.setSyncable(true)
 	);
 
