@@ -13,5 +13,6 @@ public class ServerPlayerMixin implements KeyboardEventConsumer
 	public void onKeyboardEvent(ServerboundKeyboardEvent event)
 	{
 		((KeyboardHandler) this).keyUp(event.up);
+		((KeyboardHandler) this).keyClimbing(event.climbing);
 	}
 }

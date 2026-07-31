@@ -31,7 +31,6 @@ public class Supernova implements ModInitializer
 			.setSyncable(true)
 	);
 
-
 	@Override
 	public void onInitialize()
 	{

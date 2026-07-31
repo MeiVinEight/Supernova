@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import org.mve.sn.KeyboardHandler;
+import org.mve.sn.client.SupernovaClient;
 import org.mve.sn.network.ServerboundKeyboardEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,6 +20,8 @@ public class LocalPlayerMixin
 	public Input input;
 	@Unique
 	public boolean clientKeyUp = false;
+	@Unique
+	public boolean clientKeyClimbing = false;
 
 	@Inject(
 		method = "aiStep",
@@ -31,11 +34,18 @@ public class LocalPlayerMixin
 	)
 	public void aiStep0(CallbackInfo ci)
 	{
-		if (this.clientKeyUp != this.input.up)
+		boolean climbing = false;
+		if (SupernovaClient.CLIMBING != null)
+			climbing = SupernovaClient.CLIMBING.isDown();
+		boolean sync = this.clientKeyClimbing != climbing;
+		sync |= this.clientKeyUp != this.input.up;
+		if (sync)
 		{
-			ClientPlayNetworking.send(new ServerboundKeyboardEvent(this.input.up));
+			ClientPlayNetworking.send(new ServerboundKeyboardEvent(this.input.up, SupernovaClient.CLIMBING.isDown()));
 			((KeyboardHandler) this).keyUp(this.input.up);
+			((KeyboardHandler) this).keyClimbing(climbing);
 		}
 		this.clientKeyUp = this.input.up;
+		this.clientKeyClimbing = climbing;
 	}
 }

@@ -1,4 +1,6 @@
 {
 	"enchantment.supernova.gliding": "Gliding",
-	"attribute.supernova.glidable": "Glidable"
+	"attribute.supernova.glidable": "Glidable",
+	"key.category.supernova": "Supernova",
+	"key.supernova.climbing": "Climbing"
 }
