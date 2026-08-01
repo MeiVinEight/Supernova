@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 public class Supernova implements ModInitializer
 {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Supernova");
+	public static final String TAG_SUPERNOVA_FLYING = "supernova:flying";
 	public static final String SUPERNOVA = "supernova";
 	public static final String ATTR_NAME_GLIDABLE = "glidable";
 	public static final String ATTR_NAME_FLYING = "flying";

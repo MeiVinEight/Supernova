@@ -1,0 +1,31 @@
+{
+	"anvil_cost": 8,
+	"description": {
+		"translate": "enchantment.supernova.flying"
+	},
+	"effects": {
+		"minecraft:attributes": [
+			{
+				"attribute": "supernova:flying",
+				"id": "supernova:enchantment.flying.attribute",
+				"amount": 1,
+				"operation": "add_value"
+			}
+		]
+	},
+	"max_cost": {
+		"base": 32,
+		"per_level_above_first": 16
+	},
+	"max_level": 1,
+	"min_cost": {
+		"base": 16,
+		"per_level_above_first": 4
+	},
+	"slots": [
+		"chest"
+	],
+	"supported_items": "#minecraft:enchantable/chest_armor",
+	"primary_items": "#minecraft:enchantable/chest_armor",
+	"weight": 2
+}

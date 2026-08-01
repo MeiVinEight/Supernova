@@ -95,7 +95,7 @@ public abstract class PlayerMixin implements KeyboardHandler
 			player.getAbilities().mayfly = true;
 			player.onUpdateAbilities();
 		}
-		else if ((attrFly <= 0) && mayfly)
+		else if ((attrFly <= 0) && mayfly && !this.isCreative() && !this.isSpectator())
 		{
 			player.getAbilities().mayfly = false;
 			player.getAbilities().flying = false;
