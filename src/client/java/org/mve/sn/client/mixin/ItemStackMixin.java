@@ -14,13 +14,11 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.Nullable;
 import org.mve.sn.Supernova;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -31,14 +29,6 @@ import java.util.Optional;
 @Mixin(ItemStack.class)
 public class ItemStackMixin
 {
-	@Unique
-	private static final ItemStack[] FLYING_UPGRADE_PROGRESS = {
-		Items.END_CRYSTAL.getDefaultInstance(),
-		Items.DRAGON_HEAD.getDefaultInstance(),
-		Items.NETHER_STAR.getDefaultInstance(),
-		Items.DRAGON_EGG.getDefaultInstance()
-	};
-
 	@Inject(
 		method = "getTooltipLines",
 		at = @At("RETURN")
@@ -90,9 +80,9 @@ public class ItemStackMixin
 		CompoundTag tag = data.copyTag();
 		if (!tag.contains(Supernova.TAG_SUPERNOVA_FLYING)) return;
 		int progress = tag.getInt(Supernova.TAG_SUPERNOVA_FLYING);
-		if (progress >= FLYING_UPGRADE_PROGRESS.length) return;
+		if (progress >= Supernova.SUPERNOVA_FLYING_PROGRESS.length) return;
 		MutableComponent component = Component.translatable("supernova.flying.tooltip.next");
-		ItemStack next = FLYING_UPGRADE_PROGRESS[progress];
+		ItemStack next = Supernova.SUPERNOVA_FLYING_PROGRESS[progress];
 		component.append(next.getHoverName())
 			.withStyle(next.getRarity().color());
 		list.add(component);

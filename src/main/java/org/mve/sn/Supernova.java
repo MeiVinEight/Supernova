@@ -12,6 +12,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.fml.config.ModConfig;
 import org.mve.sn.network.ServerboundKeyboardEvent;
 import org.slf4j.Logger;
@@ -39,13 +41,22 @@ public class Supernova implements ModInitializer
 		new RangedAttribute("attribute." + RESOURCE_FLYING.toLanguageKey(), 0, 0, 1)
 			.setSyncable(true)
 	);
+	public static final ItemStack[] SUPERNOVA_FLYING_PROGRESS = {null, null, null, null};
 
 	@Override
 	public void onInitialize()
 	{
 		ForgeConfigRegistry.INSTANCE.register(Supernova.SUPERNOVA, ModConfig.Type.COMMON, Configuration.SPECIFICATION);
 		PayloadTypeRegistry.playC2S().register(ServerboundKeyboardEvent.TYPE, ServerboundKeyboardEvent.CODEC);
-		ServerPlayNetworking.registerGlobalReceiver(ServerboundKeyboardEvent.TYPE, (payload, context) -> ((KeyboardEventConsumer) context.player()).onKeyboardEvent(payload));
+		ServerPlayNetworking.registerGlobalReceiver(
+			ServerboundKeyboardEvent.TYPE,
+			(payload, context) -> ((KeyboardEventConsumer) context.player()).onKeyboardEvent(payload)
+		);
+
+		SUPERNOVA_FLYING_PROGRESS[0] = Items.END_CRYSTAL.getDefaultInstance();
+		SUPERNOVA_FLYING_PROGRESS[1] = Items.DRAGON_HEAD.getDefaultInstance();
+		SUPERNOVA_FLYING_PROGRESS[2] = Items.NETHER_STAR.getDefaultInstance();
+		SUPERNOVA_FLYING_PROGRESS[3] = Items.DRAGON_EGG.getDefaultInstance();
 	}
 
 	public static boolean check(int[] arr, int tag)

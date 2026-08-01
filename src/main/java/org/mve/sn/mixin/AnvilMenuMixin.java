@@ -36,13 +36,6 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu
 	@Shadow
 	@Final
 	private DataSlot cost;
-	@Unique
-	private final static Item[] SUPERNOVA_FLYING_PROGRESS = {
-		Items.END_CRYSTAL,
-		Items.DRAGON_HEAD,
-		Items.NETHER_STAR,
-		Items.DRAGON_EGG
-	};
 
 	@Shadow
 	public abstract void createResult();
@@ -99,8 +92,8 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu
 			CompoundTag tag = data.copyTag();
 			if (!tag.contains(Supernova.TAG_SUPERNOVA_FLYING)) return;
 			int progress = tag.getInt(Supernova.TAG_SUPERNOVA_FLYING);
-			if (progress >= SUPERNOVA_FLYING_PROGRESS.length) return;
-			if (!item1.is(SUPERNOVA_FLYING_PROGRESS[progress])) return;
+			if (progress >= Supernova.SUPERNOVA_FLYING_PROGRESS.length) return;
+			if (!item1.is(Supernova.SUPERNOVA_FLYING_PROGRESS[progress].getItem())) return;
 			ItemStack result = Items.ENCHANTED_BOOK.getDefaultInstance();
 			if (progress < 3)
 			{
