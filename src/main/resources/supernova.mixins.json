@@ -8,6 +8,7 @@
 		"BlockMixin",
 		"DropExperienceBlockAccessor",
 		"EntityMixin",
+		"ExplosionMixin",
 		"GrindstoneMenu$3Mixin",
 		"GrindstoneMenu$4Mixin",
 		"GrindstoneMenuMixin",

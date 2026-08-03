@@ -35,6 +35,7 @@ public class ItemStackMixin
 	)
 	private void getTooltip0(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir)
 	{
+		if (player == null) return;
 		if (!player.level().isClientSide) return;
 		if (!Screen.hasShiftDown()) return;
 		ItemStack item = (ItemStack) (Object) this;
