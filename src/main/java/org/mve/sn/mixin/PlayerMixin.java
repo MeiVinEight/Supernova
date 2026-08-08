@@ -4,7 +4,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -14,14 +13,12 @@ import net.minecraft.world.phys.Vec3;
 import org.mve.sn.Configuration;
 import org.mve.sn.KeyboardHandler;
 import org.mve.sn.Supernova;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -124,20 +121,6 @@ public abstract class PlayerMixin implements KeyboardHandler
 	private static void createAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir)
 	{
 		cir.getReturnValue().add(Supernova.ATTRIBUTE_FLYING);
-	}
-
-	@Redirect(
-		method = "causeFallDamage",
-		at = @At(
-			value = "FIELD",
-			target = "Lnet/minecraft/world/entity/player/Abilities;mayfly:Z",
-			ordinal = 0,
-			opcode = Opcodes.GETFIELD
-		)
-	)
-	public boolean causeFallDamage$mayfly(Abilities abilities)
-	{
-		return abilities.mayfly && (this.isCreative() || this.isSpectator());
 	}
 
 	@Override
