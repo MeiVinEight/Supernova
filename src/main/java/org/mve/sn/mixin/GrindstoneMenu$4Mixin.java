@@ -53,11 +53,6 @@ public class GrindstoneMenu$4Mixin
 		{
 			ci.cancel();
 			GrindstoneMenuAccessor acc = (GrindstoneMenuAccessor) this.field_16780;
-			if (player.totalExperience < acc.maxCost())
-			{
-				itemStack.setCount(0);
-				return;
-			}
 			Container container = acc.repairSlots();
 			ItemStack item0 = container.getItem(0);
 			DataComponentType<ItemEnchantments> comp = GrindstoneMenuAccessor.getComponentType(item0);
@@ -79,7 +74,6 @@ public class GrindstoneMenu$4Mixin
 				notFirst = true;
 			}
 			container.getItem(1).shrink(1);
-			player.giveExperiencePoints(-acc.maxCost());
 			Level level = player.level();
 			level.playSound(
 				null,

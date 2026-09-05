@@ -4,6 +4,7 @@
 	"attribute.supernova.glidable": "滑翔",
 	"attribute.supernova.flying": "飞行",
 	"key.supernova.climbing": "爬行",
+	"key.supernova.gliding.speedup": "滑翔加速",
 	"supernova.flying.tooltip.next": "下一个: ",
 	"key.category.supernova": "Supernova"
 }
