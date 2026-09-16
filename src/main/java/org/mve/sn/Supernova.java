@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.config.ModConfig;
 import org.mve.sn.network.ServerboundKeyboardEvent;
+import org.mve.sn.world.item.Stackable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,7 @@ public class Supernova implements ModInitializer
 		SUPERNOVA_FLYING_PROGRESS[1] = Items.DRAGON_HEAD.getDefaultInstance();
 		SUPERNOVA_FLYING_PROGRESS[2] = Items.NETHER_STAR.getDefaultInstance();
 		SUPERNOVA_FLYING_PROGRESS[3] = Items.DRAGON_EGG.getDefaultInstance();
+		((Stackable) Items.TOTEM_OF_UNDYING).stack(64);
 	}
 
 	public static boolean check(int[] arr, int tag)

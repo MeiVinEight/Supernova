@@ -15,6 +15,7 @@
 		"GrindstoneMenu$3Mixin",
 		"GrindstoneMenu$4Mixin",
 		"GrindstoneMenuMixin",
+		"ItemMixin",
 		"ItemStackMixin",
 		"LivingEntityMixin",
 		"PersistentProjectileEntityMixin",
