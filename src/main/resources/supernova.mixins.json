@@ -5,6 +5,8 @@
 	"mixins": [
 		"AbstractSkeletonEntityMixin",
 		"AnvilMenuMixin",
+		"BlockBehaviour$PropertiesMixin1",
+		"BlockBuilderMixin",
 		"BlockMixin",
 		"DropExperienceBlockAccessor",
 		"EntityMixin",
@@ -15,7 +17,6 @@
 		"GrindstoneMenuMixin",
 		"ItemStackMixin",
 		"LivingEntityMixin",
-		"MappedRegistryMixin",
 		"PersistentProjectileEntityMixin",
 		"PlayerMixin",
 		"ProjectileMixin",
