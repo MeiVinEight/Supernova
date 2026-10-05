@@ -32,4 +32,10 @@ public class AbstractContainerMenuMixin implements IAbstractContainerMenu
 	{
 		this.supernova$lockHotbar = j;
 	}
+
+	@Override
+	public int supernova$lockHotbar()
+	{
+		return this.supernova$lockHotbar;
+	}
 }

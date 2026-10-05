@@ -21,6 +21,7 @@
 		"PersistentProjectileEntityMixin",
 		"PlayerMixin",
 		"ProjectileMixin",
+		"ServerGamePacketListenerImplMixin",
 		"ServerPlayerGameModeMixin",
 		"ServerPlayerMixin",
 		"StringUtilMixin"
