@@ -3,10 +3,22 @@ package org.mve.sn.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.NonInteractiveResultSlot;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.mve.sn.Supernova;
+import org.mve.sn.world.ShulkerBox;
+import org.mve.sn.world.inventory.IAbstractContainerMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin
@@ -17,5 +29,35 @@ public abstract class ItemStackMixin
 		if (type == DataComponents.REPAIR_COST) return 0;
 		//if (type == DataComponents.DAMAGE && Items.ELYTRA.equals(_this.getItem())) return 0;
 		return value;
+	}
+
+	@Inject(
+		method = "use",
+		at = @At("HEAD")
+	)
+	private void use$HEAD(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir)
+	{
+		if (player.level().isClientSide())
+			return;
+		ItemStack that = (ItemStack) (Object) this;
+		if (!Supernova.SHULKER_BOX_ITEM.contains(that.getItem()))
+			return;
+		if (interactionHand != InteractionHand.MAIN_HAND)
+			return;
+		ShulkerBox box = new ShulkerBox(that.copy());
+		int selectedHotbar = player.getInventory().selected;
+		//player.setItemInHand(interactionHand, ItemStack.EMPTY);
+		box.onClose = (player1) -> player1.getInventory().setItem(selectedHotbar, box.item);
+		box.onCreate = (menu) ->
+		{
+			((IAbstractContainerMenu) menu).supernova$lockHotbar(selectedHotbar);
+			int slotId = selectedHotbar + 54;
+			Slot slot = menu.getSlot(slotId);
+			NonInteractiveResultSlot slot1 = new NonInteractiveResultSlot(slot.container, slot.getContainerSlot(), slot.x, slot.y);
+			slot1.index = slot.index;
+			menu.slots.set(slotId, slot1);
+			return menu;
+		};
+		box.openMenu((ServerPlayer) player);
 	}
 }

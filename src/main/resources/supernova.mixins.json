@@ -3,6 +3,7 @@
 	"package": "org.mve.sn.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"AbstractContainerMenuMixin",
 		"AbstractSkeletonEntityMixin",
 		"AnvilMenuMixin",
 		"BlockBehaviour$PropertiesMixin1",

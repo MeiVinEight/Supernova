@@ -1,7 +1,6 @@
 package org.mve.sn.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.tterrag.registrate.builders.BlockBuilder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(BlockBuilder.class)
+@Mixin(targets = "com.tterrag.registrate.builders.BlockBuilder")
 public class BlockBuilderMixin
 {
 	@Inject(
