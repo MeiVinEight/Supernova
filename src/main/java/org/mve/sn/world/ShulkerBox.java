@@ -1,7 +1,6 @@
 package org.mve.sn.world;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +24,9 @@ public class ShulkerBox implements Container
 	public final ItemStack item;
 	public final NonNullList<ItemStack> items;
 	public Function<ShulkerBoxMenu, ShulkerBoxMenu> onCreate;
+	public Consumer<Player> onChange;
 	public Consumer<Player> onClose;
+	public ServerPlayer owner;
 	public int nonEmpty;
 	public boolean valid = true;
 
@@ -34,8 +35,7 @@ public class ShulkerBox implements Container
 		this.item = item;
 		this.items = NonNullList.withSize(SHULKER_BOX_SIZE, ItemStack.EMPTY);
 		this.nonEmpty = 0;
-		ItemContainerContents contents = this.item.getComponents()
-			.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+		ItemContainerContents contents = this.item.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
 		contents.copyInto(this.items);
 		for (int i = 0; i < SHULKER_BOX_SIZE; i++)
 		{
@@ -99,10 +99,9 @@ public class ShulkerBox implements Container
 	@Override
 	public void setChanged()
 	{
-		DataComponentMap map = DataComponentMap.builder()
-			.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.items))
-			.build();
-		this.item.applyComponents(map);
+		this.item.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.items));
+		if (this.onChange != null)
+			this.onChange.accept(this.owner);
 	}
 
 	@Override
@@ -147,5 +146,6 @@ public class ShulkerBox implements Container
 				return menu;
 			}
 		});
+		this.owner = player;
 	}
 }

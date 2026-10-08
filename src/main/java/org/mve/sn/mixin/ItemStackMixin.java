@@ -3,6 +3,8 @@ package org.mve.sn.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -10,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.NonInteractiveResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import org.mve.sn.Supernova;
 import org.mve.sn.world.ShulkerBox;
@@ -44,10 +47,28 @@ public abstract class ItemStackMixin
 			return;
 		if (interactionHand != InteractionHand.MAIN_HAND)
 			return;
+		if (that.getCount() > 1)
+		{
+			ItemStack copy = that.copyWithCount(that.getCount() - 1);
+			that.setCount(1);
+			CustomData data = that.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+			CompoundTag tag = data.copyTag();
+			tag.put("supernova", StringTag.valueOf("unstackable_shulker_box"));
+			that.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+			player.setItemInHand(interactionHand, that);
+			player.getInventory().placeItemBackInInventory(copy);
+			if (data.isEmpty())
+				that.remove(DataComponents.CUSTOM_DATA);
+			else
+				that.set(DataComponents.CUSTOM_DATA, data);
+			player.setItemInHand(interactionHand, that);
+		}
 		ShulkerBox box = new ShulkerBox(that.copy());
 		int selectedHotbar = player.getInventory().selected;
+
 		//player.setItemInHand(interactionHand, ItemStack.EMPTY);
 		box.onClose = (player1) -> player1.getInventory().setItem(selectedHotbar, box.item);
+		box.onChange = (player1) -> player1.getInventory().setItem(selectedHotbar, box.item);
 		box.onCreate = (menu) ->
 		{
 			((IAbstractContainerMenu) menu).supernova$lockHotbar(selectedHotbar);
