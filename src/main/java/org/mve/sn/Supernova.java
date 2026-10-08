@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.config.ModConfig;
@@ -19,6 +20,9 @@ import org.mve.sn.network.ServerboundKeyboardEvent;
 import org.mve.sn.world.item.Stackable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Supernova implements ModInitializer
 {
@@ -43,6 +47,7 @@ public class Supernova implements ModInitializer
 			.setSyncable(true)
 	);
 	public static final ItemStack[] SUPERNOVA_FLYING_PROGRESS = {null, null, null, null};
+	public static final Set<Item> SHULKER_BOX_ITEM = new HashSet<>();
 
 	@Override
 	public void onInitialize()
@@ -59,6 +64,26 @@ public class Supernova implements ModInitializer
 		SUPERNOVA_FLYING_PROGRESS[2] = Items.NETHER_STAR.getDefaultInstance();
 		SUPERNOVA_FLYING_PROGRESS[3] = Items.DRAGON_EGG.getDefaultInstance();
 		((Stackable) Items.TOTEM_OF_UNDYING).stack(64);
+
+		SHULKER_BOX_ITEM.addAll(Set.of(
+			Items.SHULKER_BOX,
+			Items.BLACK_SHULKER_BOX,
+			Items.BLUE_SHULKER_BOX,
+			Items.BROWN_SHULKER_BOX,
+			Items.CYAN_SHULKER_BOX,
+			Items.GRAY_SHULKER_BOX,
+			Items.GREEN_SHULKER_BOX,
+			Items.LIGHT_BLUE_SHULKER_BOX,
+			Items.LIGHT_GRAY_SHULKER_BOX,
+			Items.LIME_SHULKER_BOX,
+			Items.MAGENTA_SHULKER_BOX,
+			Items.ORANGE_SHULKER_BOX,
+			Items.PINK_SHULKER_BOX,
+			Items.PURPLE_SHULKER_BOX,
+			Items.RED_SHULKER_BOX,
+			Items.WHITE_SHULKER_BOX,
+			Items.YELLOW_SHULKER_BOX
+		));
 	}
 
 	public static boolean check(int[] arr, int tag)
