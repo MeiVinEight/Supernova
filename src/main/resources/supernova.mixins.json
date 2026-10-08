@@ -8,6 +8,7 @@
 		"AnvilMenuMixin",
 		"BlockBehaviour$PropertiesMixin1",
 		"BlockBuilderMixin",
+		"BlockItemMixin",
 		"BlockMixin",
 		"DropExperienceBlockAccessor",
 		"EntityMixin",
