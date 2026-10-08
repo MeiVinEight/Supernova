@@ -21,6 +21,8 @@ public class BlockItemMixin
 	private void place$HEAD(BlockPlaceContext blockPlaceContext, CallbackInfoReturnable<InteractionResult> cir)
 	{
 		Player player = blockPlaceContext.getPlayer();
+		if (player == null)
+			return;
 		if (player.level().isClientSide())
 			return;
 		if ((player.containerMenu instanceof IAbstractContainerMenu iam) && (iam.supernova$lockHotbar() == player.getInventory().selected))
