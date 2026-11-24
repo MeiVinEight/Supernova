@@ -33,6 +33,8 @@ repositories {
 	maven { url "https://cursemaven.com" }
 	maven { url "https://api.modrinth.com/maven" }
 	flatDir { dir "libs" }
+	flatDir { dir "libs/create" }
+	flatDir { dir "run/mods" }
 }
 
 loom {
