@@ -50,8 +50,8 @@ loom {
 }
 
 dependencies {
-	//modImplementation ':core:3.8.0'
-	//modImplementation ':toml:3.8.0'
+	implementation ':core:3.8.0'
+	implementation ':toml:3.8.0'
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	//mappings loom.officialMojangMappings()
@@ -59,9 +59,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	//modImplementation 'maven.modrinth:forge-config-api-port:v26.1.5-mc26.1.x-Fabric'
+	implementation ':ForgeConfigAPIPort:v26.1.5-mc26.1.x-Fabric'
 	//modImplementation "maven.modrinth:modmenu:11.0.1"
-	implementation "maven.modrinth:placeholder-api:2.4.2+1.21"
+	//implementation "maven.modrinth:placeholder-api:2.4.2+1.21"
 	//modCompileOnly ":ServerReplay:1.2.10+mc1.21.1"
 	//modCompileOnly ":fabric-carpet:1.21-1.4.147+v240613"
 	//modImplementation "maven.modrinth:crawl:KQ0hsUlb"
