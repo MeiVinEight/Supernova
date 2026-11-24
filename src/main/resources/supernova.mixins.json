@@ -11,6 +11,7 @@
 		"BlockBuilderMixin",
 		"BlockItemMixin",
 		"BlockMixin",
+		"CarpetServerMixin",
 		"DropExperienceBlockAccessor",
 		"EntityMixin",
 		"ExplosionMixin",
