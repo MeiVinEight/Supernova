@@ -1,5 +1,8 @@
 package org.mve.sn.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
@@ -9,6 +12,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import org.mve.sn.Configuration;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +22,10 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Set;
 
 @Mixin(Explosion.class)
 public class ExplosionMixin
@@ -25,6 +34,12 @@ public class ExplosionMixin
 	@Mutable
 	@Shadow
 	private Explosion.BlockInteraction blockInteraction;
+	@Shadow
+	@Final
+	private ObjectArrayList<BlockPos> toBlow;
+	@Shadow
+	@Final
+	private Level level;
 
 	@Inject(
 		method = "<init>(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;DDDFZLnet/minecraft/world/level/Explosion$BlockInteraction;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/Holder;)V",
@@ -40,5 +55,39 @@ public class ExplosionMixin
 		if (key == null) return;
 		if (Configuration.ENTITY_EXPLOSION.get().contains(key.toString()))
 			this.blockInteraction = Explosion.BlockInteraction.KEEP;
+	}
+
+	@Redirect(
+		method = "explode",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/util/Set;add(Ljava/lang/Object;)Z",
+			ordinal = 0
+		)
+	)
+	private <E> boolean explode$add$0(Set<E> instance, E e, @Local(ordinal = 0) BlockState blockState)
+	{
+		if (blockState.isAir())
+			return false;
+		BlockPos pos = (BlockPos) e;
+		//if (this.level.isEmptyBlock(pos))
+		//	return false;
+		this.toBlow.add(pos);
+		return true;
+	}
+
+	@Redirect(
+		method = "explode",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/level/Level;getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;",
+			ordinal = 0
+		)
+	)
+	private FluidState supernova$explode$getFluidState(Level level, BlockPos pos, @Local(ordinal = 0) BlockState state)
+	{
+		if (state == null)
+			return Fluids.EMPTY.defaultFluidState();
+		return state.getFluidState();
 	}
 }
