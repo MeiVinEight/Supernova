@@ -25,6 +25,7 @@
 		"PersistentProjectileEntityMixin",
 		"PlayerMixin",
 		"ProjectileMixin",
+		"ReplayVoicechatPluginMixin",
 		"ServerGamePacketListenerImplMixin",
 		"ServerPlayerGameModeMixin",
 		"ServerPlayerMixin",
