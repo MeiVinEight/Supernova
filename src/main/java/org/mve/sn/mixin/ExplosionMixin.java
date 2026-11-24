@@ -1,20 +1,14 @@
 package org.mve.sn.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.ServerExplosion;
+import net.minecraft.world.phys.Vec3;
 import org.mve.sn.Configuration;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,41 +16,35 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Set;
-
-@Mixin(Explosion.class)
+@Mixin(ServerExplosion.class)
 public class ExplosionMixin
 {
 	@Final
 	@Mutable
 	@Shadow
 	private Explosion.BlockInteraction blockInteraction;
-	@Shadow
-	@Final
-	private ObjectArrayList<BlockPos> toBlow;
-	@Shadow
-	@Final
-	private Level level;
 
 	@Inject(
-		method = "<init>(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;Lnet/minecraft/world/level/ExplosionDamageCalculator;DDDFZLnet/minecraft/world/level/Explosion$BlockInteraction;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/particles/ParticleOptions;Lnet/minecraft/core/Holder;)V",
+		method = "<init>",
 		at = @At("RETURN")
 	)
-	private void initReturn(Level level, Entity entity, DamageSource damageSource, ExplosionDamageCalculator explosionDamageCalculator, double d, double e, double f, float g, boolean bl, Explosion.BlockInteraction blockInteraction, ParticleOptions particleOptions, ParticleOptions particleOptions2, Holder holder, CallbackInfo ci)
+	private void initReturn(ServerLevel level, Entity entity, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, Vec3 center, float radius, boolean fire, Explosion.BlockInteraction blockInteraction, CallbackInfo ci)
 	{
 		if (entity == null) return;
-		ResourceLocation key = entity.level()
+		Identifier key = entity.level()
 			.registryAccess()
-			.registryOrThrow(Registries.ENTITY_TYPE)
+			.get(Registries.ENTITY_TYPE)
+			.orElseThrow()
+			.value()
 			.getKey(entity.getType());
 		if (key == null) return;
 		if (Configuration.ENTITY_EXPLOSION.get().contains(key.toString()))
 			this.blockInteraction = Explosion.BlockInteraction.KEEP;
 	}
 
+	/*
 	@Redirect(
 		method = "explode",
 		at = @At(
@@ -90,4 +78,5 @@ public class ExplosionMixin
 			return Fluids.EMPTY.defaultFluidState();
 		return state.getFluidState();
 	}
+	*/
 }

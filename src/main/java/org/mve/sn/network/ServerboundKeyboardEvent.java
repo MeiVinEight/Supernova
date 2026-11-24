@@ -4,13 +4,13 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.mve.sn.Supernova;
 
 public class ServerboundKeyboardEvent implements CustomPacketPayload
 {
 	public static final String PACKET_NAME = "keyboard_event";
-	public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(Supernova.SUPERNOVA, PACKET_NAME);
+	public static final Identifier ID = Identifier.fromNamespaceAndPath(Supernova.SUPERNOVA, PACKET_NAME);
 	public static final CustomPacketPayload.Type<ServerboundKeyboardEvent> TYPE = new Type<>(ID);
 	public static final StreamCodec<ByteBuf, Boolean> BOOLEAN_STREAM_CODEC = new StreamCodec<>()
 	{

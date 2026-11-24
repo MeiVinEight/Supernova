@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EnchantmentTags;
@@ -35,7 +34,7 @@ public class GrindstoneMenu$4Mixin
 {
 	@Shadow
 	@Final
-	GrindstoneMenu field_16780;
+	GrindstoneMenu this$0;
 
 	@Inject(
 		method = "onTake",
@@ -48,11 +47,11 @@ public class GrindstoneMenu$4Mixin
 	)
 	public void onTake0(Player player, ItemStack itemStack, CallbackInfo ci)
 	{
-		int sn = ((SupernovaMenu) this.field_16780).supernova();
+		int sn = ((SupernovaMenu) this.this$0).supernova();
 		if (sn == 1)
 		{
 			ci.cancel();
-			GrindstoneMenuAccessor acc = (GrindstoneMenuAccessor) this.field_16780;
+			GrindstoneMenuAccessor acc = (GrindstoneMenuAccessor) this.this$0;
 			Container container = acc.repairSlots();
 			ItemStack item0 = container.getItem(0);
 			DataComponentType<ItemEnchantments> comp = GrindstoneMenuAccessor.getComponentType(item0);
@@ -81,7 +80,7 @@ public class GrindstoneMenu$4Mixin
 				SoundEvents.ENCHANTMENT_TABLE_USE,
 				SoundSource.BLOCKS,
 				1.0F,
-				level.random.nextFloat() * 0.1F + 0.9F
+				level.getRandom().nextFloat() * 0.1F + 0.9F
 			);
 			acc.createResult0();
 		}
@@ -96,7 +95,7 @@ public class GrindstoneMenu$4Mixin
 	)
 	public void onTake$execute0(ContainerLevelAccess instance, BiConsumer<Level, BlockPos> biConsumer)
 	{
-		int sn = ((SupernovaMenu) this.field_16780).supernova();
+		int sn = ((SupernovaMenu) this.this$0).supernova();
 		if (sn != 0) return;
 		instance.execute(biConsumer);
 	}

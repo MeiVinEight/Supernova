@@ -3,11 +3,12 @@ package org.mve.sn.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.NonInteractiveResultSlot;
 import net.minecraft.world.inventory.Slot;
@@ -26,7 +27,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin
 {
-	@ModifyVariable(at = @At("HEAD"), method = "set", index = 2, argsOnly = true)
+	@ModifyVariable(
+		at = @At("HEAD"),
+		method = "set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;",
+		index = 2,
+		argsOnly = true
+	)
 	private Object set(Object value, @Local(argsOnly = true, index = 1) DataComponentType<?> type)
 	{
 		if (type == DataComponents.REPAIR_COST) return 0;
@@ -34,11 +40,23 @@ public abstract class ItemStackMixin
 		return value;
 	}
 
+	@ModifyVariable(
+		at = @At("HEAD"),
+		method = "set(Lnet/minecraft/core/component/TypedDataComponent;)Ljava/lang/Object;",
+		index = 1,
+		argsOnly = true
+	)
+	private TypedDataComponent<?> set$1$arg$2(TypedDataComponent<?> value)
+	{
+		if (value.type() == DataComponents.REPAIR_COST) value = new TypedDataComponent<>(DataComponents.REPAIR_COST, 0);
+		return value;
+	}
+
 	@Inject(
 		method = "use",
 		at = @At("HEAD")
 	)
-	private void use$HEAD(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir)
+	private void use$HEAD(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir)
 	{
 		if (player.level().isClientSide())
 			return;
@@ -64,7 +82,7 @@ public abstract class ItemStackMixin
 			player.setItemInHand(interactionHand, that);
 		}
 		ShulkerBox box = new ShulkerBox(that.copy());
-		int selectedHotbar = player.getInventory().selected;
+		int selectedHotbar = player.getInventory().getSelectedSlot();
 
 		//player.setItemInHand(interactionHand, ItemStack.EMPTY);
 		box.onClose = (player1) -> player1.getInventory().setItem(selectedHotbar, box.item);

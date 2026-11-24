@@ -1,10 +1,11 @@
 package org.mve.sn.client.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.serialization.DataResult;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -35,15 +36,17 @@ public class ItemStackMixin
 	)
 	private void getTooltip0(Item.TooltipContext tooltipContext, Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir)
 	{
+		//tooltipContext.registries().createSerializationContext(NbtOps.INSTANCE)
 		if (player == null) return;
-		if (!player.level().isClientSide) return;
-		if (!Screen.hasShiftDown()) return;
+		if (!player.level().isClientSide()) return;
+		if (!Minecraft.getInstance().hasShiftDown()) return;
 		ItemStack item = (ItemStack) (Object) this;
-		Tag tag = item.save(player.level().registryAccess());
+		DataResult<Tag> result = ItemStack.CODEC.encodeStart(tooltipContext.registries().createSerializationContext(NbtOps.INSTANCE), item);
+		Tag tag = result.getOrThrow();
 		Component component = NbtUtils.toPrettyComponent(tag);
 		Minecraft instance = Minecraft.getInstance();
 		int width = instance.getWindow().getGuiScaledWidth();
-		width -= (int) instance.getWindow().getGuiScale() * 4;
+		width -= instance.getWindow().getGuiScale() * 4;
 		List<FormattedText> list = instance.font.getSplitter().splitLines(component, width, Style.EMPTY);
 		for (FormattedText formattedText : list)
 		{
@@ -80,10 +83,10 @@ public class ItemStackMixin
 		CustomData data = _this.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 		CompoundTag tag = data.copyTag();
 		if (!tag.contains(Supernova.TAG_SUPERNOVA_FLYING)) return;
-		int progress = tag.getInt(Supernova.TAG_SUPERNOVA_FLYING);
+		int progress = tag.getInt(Supernova.TAG_SUPERNOVA_FLYING).orElse(0);
 		if (progress >= Supernova.SUPERNOVA_FLYING_PROGRESS.length) return;
 		MutableComponent component = Component.translatable("supernova.flying.tooltip.next");
-		ItemStack next = Supernova.SUPERNOVA_FLYING_PROGRESS[progress];
+		ItemStack next = Supernova.SUPERNOVA_FLYING_PROGRESS[progress].getDefaultInstance();
 		component.append(next.getHoverName())
 			.withStyle(next.getRarity().color());
 		list.add(component);

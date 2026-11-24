@@ -16,7 +16,7 @@
 	"license": "MIT",
 	"icon": "pack.png",
 	"environment": "*",
-	"accessWidener": "supernova.accesswidener",
+	"accessWidener": "supernova.classtweaker",
 	"entrypoints":
 	{
 		"main":

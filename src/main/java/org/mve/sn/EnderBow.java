@@ -2,6 +2,7 @@ package org.mve.sn;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,7 +35,7 @@ public class EnderBow
 	public static void collision(Projectile entity, HitResult result)
 	{
 		if (!Configuration.ENDER_BOW.get()) return;
-		if (entity.level().isClientSide) return;
+		if (entity.level().isClientSide()) return;
 		if (result.getType() == HitResult.Type.MISS) return;
 		if (!Supernova.check(((SupernovaEntity) entity).supernova(), Supernova.SUPERNOVA_ENDERBOW)) return;
 
@@ -72,7 +73,8 @@ public class EnderBow
 		if (stack.isEmpty()) return;
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
 		if (data == null) return;
-		sna.supernova(data.copyTag().getIntArray(Supernova.SUPERNOVA));
+		CompoundTag tag = data.copyTag();
+		tag.getIntArray(Supernova.SUPERNOVA).ifPresent(sna::supernova);
 	}
 
 	private static void teleport(ServerLevel world, Entity entity, Vec3 pos)
@@ -82,7 +84,7 @@ public class EnderBow
 			entity.stopRiding();
 		}
 		while (entity.getVehicle() != null) entity = entity.getVehicle();
-		entity.teleportTo(world, pos.x, pos.y, pos.z, Set.of(), entity.getYRot(), entity.getXRot());
+		entity.teleportTo(world, pos.x, pos.y, pos.z, Set.of(), entity.getYRot(), entity.getXRot(), false);
 	}
 
 	private static void particle(ServerLevel world, Entity entity)
@@ -91,6 +93,7 @@ public class EnderBow
 		{
 			ClientboundLevelParticlesPacket packet = new ClientboundLevelParticlesPacket(
 				ParticleTypes.PORTAL,
+				true,
 				true,
 				entity.getRandomX(0.5),
 				entity.getRandomY() - 0.25,
@@ -107,9 +110,5 @@ public class EnderBow
 				world.sendParticles(player, true, packet.getX(), packet.getY(), packet.getZ(), packet);
 			}
 		}
-	}
-
-	static
-	{
 	}
 }

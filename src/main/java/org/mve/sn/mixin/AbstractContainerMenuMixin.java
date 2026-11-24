@@ -2,7 +2,7 @@ package org.mve.sn.mixin;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import org.mve.sn.world.inventory.IAbstractContainerMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,9 +21,9 @@ public class AbstractContainerMenuMixin implements IAbstractContainerMenu
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void doClick$HEAD(int i, int j, ClickType clickType, Player player, CallbackInfo ci)
+	private void doClick$HEAD(int i, int j, ContainerInput clickType, Player player, CallbackInfo ci)
 	{
-		if (clickType == ClickType.SWAP && j == this.supernova$lockHotbar)
+		if (clickType == ContainerInput.SWAP && j == this.supernova$lockHotbar)
 			ci.cancel();
 	}
 

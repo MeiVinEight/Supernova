@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(StringUtil.class)
 public class StringUtilMixin
 {
-	@Inject(method = "isAllowedChatCharacter(C)Z", at = @At("RETURN"), cancellable = true)
-	private static void isAllowedChatCharacter(char ch, CallbackInfoReturnable<Boolean> cir)
+	@Inject(method = "isAllowedChatCharacter", at = @At("RETURN"), cancellable = true)
+	private static void isAllowedChatCharacter(int ch, CallbackInfoReturnable<Boolean> cir)
 	{
 		if (Configuration.ESCAPE_ALLOWED.get())
 			cir.setReturnValue(ch >= ' ' && ch != 127);

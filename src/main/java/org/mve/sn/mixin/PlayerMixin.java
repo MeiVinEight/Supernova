@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -26,13 +27,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerMixin implements KeyboardHandler
 {
 	@Shadow
-	public abstract void startFallFlying();
-
-	@Shadow
 	public abstract boolean isCreative();
 
 	@Shadow
 	public abstract boolean isSpectator();
+
+	@Shadow
+	protected abstract boolean canGlide();
 
 	@Unique
 	private boolean keyUp = false;
@@ -48,7 +49,7 @@ public abstract class PlayerMixin implements KeyboardHandler
 	{
 		if (!Configuration.INFINITY_FIX.get()) return;
 		Player player = (Player) (Object) this;
-		if (player.level().isClientSide) return;
+		if (player.level().isClientSide()) return;
 		if (cir.getReturnValue() != null && !cir.getReturnValue().isEmpty()) return;
 		ItemStack item = Items.ARROW.getDefaultInstance();
 		Holder.Reference<Enchantment> infinity = player.level()
@@ -59,22 +60,21 @@ public abstract class PlayerMixin implements KeyboardHandler
 			cir.setReturnValue(item);
 	}
 
-	@Inject(
+/*
+	@Redirect(
 		method = "tryToStartFallFlying",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/world/entity/player/Player;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;",
+			target = "Lnet/minecraft/world/entity/player/Player;canGlide()Z",
 			ordinal = 0
-		),
-		cancellable = true
+		)
 	)
-	public void tryToStartFallFlying$is0(CallbackInfoReturnable<Boolean> cir)
+	public boolean tryToStartFallFlying$is0(Player instance)
 	{
 		Player player = (Player) (Object) this;
-		if (!Supernova.glidable(player)) return;
-		this.startFallFlying();
-		cir.setReturnValue(true);
+		return Supernova.glidable(player) | this.canGlide();
 	}
+*/
 
 	@Inject(
 		method = "aiStep",
@@ -84,7 +84,7 @@ public abstract class PlayerMixin implements KeyboardHandler
 	{
 		this.supernova$gliding();
 		Player player = (Player) (Object) this;
-		if (player.level().isClientSide) return;
+		if (player.level().isClientSide()) return;
 		double attrFly = player.getAttributes().getValue(Supernova.ATTRIBUTE_FLYING);
 		boolean mayfly = player.getAbilities().mayfly;
 		if ((attrFly > 0) && (!mayfly))

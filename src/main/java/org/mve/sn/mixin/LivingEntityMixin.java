@@ -1,25 +1,22 @@
 package org.mve.sn.mixin;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
 import org.mve.sn.Supernova;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity
@@ -32,6 +29,7 @@ public abstract class LivingEntityMixin extends Entity
 		super(entityType, level);
 	}
 
+	/*
 	@Inject(
 		method = "updateFallFlying",
 		at = @At(
@@ -47,7 +45,7 @@ public abstract class LivingEntityMixin extends Entity
 		if (!Supernova.glidable(living)) return;
 		ci.cancel();
 		int i = living.getFallFlyingTicks() + 1;
-		if (!living.level().isClientSide)
+		if (!living.level().isClientSide())
 		{
 			this.setSharedFlag(7, true);
 			if (i % 10 == 0)
@@ -58,7 +56,7 @@ public abstract class LivingEntityMixin extends Entity
 					Holder.Reference<Enchantment> gliding = living.level()
 						.registryAccess()
 						.lookupOrThrow(Registries.ENCHANTMENT)
-						.get(ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.withDefaultNamespace("gliding")))
+						.get(ResourceKey.create(Registries.ENCHANTMENT, Identifier.withDefaultNamespace("gliding")))
 						.orElse(null);
 					if (gliding != null)
 					{
@@ -77,6 +75,7 @@ public abstract class LivingEntityMixin extends Entity
 			}
 		}
 	}
+	*/
 
 	@Inject(
 		method = "createLivingAttributes",
@@ -85,5 +84,29 @@ public abstract class LivingEntityMixin extends Entity
 	private static void createLivingAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir)
 	{
 		cir.getReturnValue().add(Supernova.ATRIBUTE_GLIDABLE);
+	}
+
+	@Inject(
+		method = "canGlideUsing",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private static void canGlideUsing(ItemStack itemStack, EquipmentSlot slot, CallbackInfoReturnable<Boolean> cir)
+	{
+		if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR)
+			return;
+		if (itemStack == null)
+			return;
+
+		List<Integer> gliding1 = itemStack.getEnchantments()
+			.entrySet()
+			.stream()
+			.filter(entry -> entry.getKey().is(Identifier.withDefaultNamespace("gliding")))
+			.map(Object2IntMap.Entry::getIntValue)
+			.toList();
+		if (gliding1.isEmpty())
+			return;
+		if (gliding1.getFirst() > 0)
+			cir.setReturnValue(true);
 	}
 }

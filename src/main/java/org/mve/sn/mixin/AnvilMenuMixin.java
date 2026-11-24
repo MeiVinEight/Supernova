@@ -4,20 +4,20 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.ItemCombinerMenu;
+import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.Enchantment;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.mve.sn.Supernova;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,13 +37,13 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu
 	@Final
 	private DataSlot cost;
 
+	public AnvilMenuMixin(@Nullable MenuType<?> menuType, int containerId, Inventory inventory, ContainerLevelAccess access, ItemCombinerMenuSlotDefinition itemInputSlots)
+	{
+		super(menuType, containerId, inventory, access, itemInputSlots);
+	}
+
 	@Shadow
 	public abstract void createResult();
-
-	public AnvilMenuMixin(@Nullable MenuType<?> menuType, int i, Inventory inventory, ContainerLevelAccess containerLevelAccess)
-	{
-		super(menuType, i, inventory, containerLevelAccess);
-	}
 
 	@Inject(at = @At("RETURN"), method = "calculateIncreasedRepairCost", cancellable = true)
 	private static void getNextCost(int cost, CallbackInfoReturnable<Integer> cir)
@@ -91,9 +91,9 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu
 			CustomData data = item0.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 			CompoundTag tag = data.copyTag();
 			if (!tag.contains(Supernova.TAG_SUPERNOVA_FLYING)) return;
-			int progress = tag.getInt(Supernova.TAG_SUPERNOVA_FLYING);
+			int progress = tag.getIntOr(Supernova.TAG_SUPERNOVA_FLYING, 0);
 			if (progress >= Supernova.SUPERNOVA_FLYING_PROGRESS.length) return;
-			if (!item1.is(Supernova.SUPERNOVA_FLYING_PROGRESS[progress].getItem())) return;
+			if (!item1.is(Supernova.SUPERNOVA_FLYING_PROGRESS[progress])) return;
 			ItemStack result = Items.ENCHANTED_BOOK.getDefaultInstance();
 			if (progress < 3)
 			{
@@ -105,8 +105,9 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu
 				Holder<Enchantment> enchantment = this.player
 					.level()
 					.registryAccess()
-					.registryOrThrow(Registries.ENCHANTMENT)
-					.getHolder(ResourceLocation.fromNamespaceAndPath("supernova", "flying"))
+					.lookup(Registries.ENCHANTMENT)
+					.orElseThrow()
+					.get(Identifier.fromNamespaceAndPath("supernova", "flying"))
 					.orElse(null);
 				if (enchantment == null) return;
 				result.enchant(enchantment, 1);

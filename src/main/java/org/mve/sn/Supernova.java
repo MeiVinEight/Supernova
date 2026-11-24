@@ -1,19 +1,18 @@
 package org.mve.sn;
 
-import fuzs.forgeconfigapiport.fabric.api.forge.v4.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.config.ModConfig;
 import org.mve.sn.network.ServerboundKeyboardEvent;
@@ -31,8 +30,8 @@ public class Supernova implements ModInitializer
 	public static final String SUPERNOVA = "supernova";
 	public static final String ATTR_NAME_GLIDABLE = "glidable";
 	public static final String ATTR_NAME_FLYING = "flying";
-	public static final ResourceLocation RESOURCE_GLIDABLE = ResourceLocation.fromNamespaceAndPath(Supernova.SUPERNOVA, Supernova.ATTR_NAME_GLIDABLE);
-	public static final ResourceLocation RESOURCE_FLYING = ResourceLocation.fromNamespaceAndPath(Supernova.SUPERNOVA, Supernova.ATTR_NAME_FLYING);
+	public static final Identifier RESOURCE_GLIDABLE = Identifier.fromNamespaceAndPath(Supernova.SUPERNOVA, Supernova.ATTR_NAME_GLIDABLE);
+	public static final Identifier RESOURCE_FLYING = Identifier.fromNamespaceAndPath(Supernova.SUPERNOVA, Supernova.ATTR_NAME_FLYING);
 	public static final int SUPERNOVA_ENDERBOW = 0;
 	public static final Holder<Attribute> ATRIBUTE_GLIDABLE = Registry.registerForHolder(
 		BuiltInRegistries.ATTRIBUTE,
@@ -46,23 +45,23 @@ public class Supernova implements ModInitializer
 		new RangedAttribute("attribute." + RESOURCE_FLYING.toLanguageKey(), 0, 0, 1)
 			.setSyncable(true)
 	);
-	public static final ItemStack[] SUPERNOVA_FLYING_PROGRESS = {null, null, null, null};
+	public static final Item[] SUPERNOVA_FLYING_PROGRESS = {null, null, null, null};
 	public static final Set<Item> SHULKER_BOX_ITEM = new HashSet<>();
 
 	@Override
 	public void onInitialize()
 	{
-		ForgeConfigRegistry.INSTANCE.register(Supernova.SUPERNOVA, ModConfig.Type.COMMON, Configuration.SPECIFICATION);
-		PayloadTypeRegistry.playC2S().register(ServerboundKeyboardEvent.TYPE, ServerboundKeyboardEvent.CODEC);
+		ConfigRegistry.INSTANCE.register(Supernova.SUPERNOVA, ModConfig.Type.COMMON, Configuration.SPECIFICATION);
+		PayloadTypeRegistry.serverboundPlay().register(ServerboundKeyboardEvent.TYPE, ServerboundKeyboardEvent.CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(
 			ServerboundKeyboardEvent.TYPE,
 			(payload, context) -> ((KeyboardEventConsumer) context.player()).onKeyboardEvent(payload)
 		);
 
-		SUPERNOVA_FLYING_PROGRESS[0] = Items.END_CRYSTAL.getDefaultInstance();
-		SUPERNOVA_FLYING_PROGRESS[1] = Items.DRAGON_HEAD.getDefaultInstance();
-		SUPERNOVA_FLYING_PROGRESS[2] = Items.NETHER_STAR.getDefaultInstance();
-		SUPERNOVA_FLYING_PROGRESS[3] = Items.DRAGON_EGG.getDefaultInstance();
+		SUPERNOVA_FLYING_PROGRESS[0] = Items.END_CRYSTAL;
+		SUPERNOVA_FLYING_PROGRESS[1] = Items.DRAGON_HEAD;
+		SUPERNOVA_FLYING_PROGRESS[2] = Items.NETHER_STAR;
+		SUPERNOVA_FLYING_PROGRESS[3] = Items.DRAGON_EGG;
 		((Stackable) Items.TOTEM_OF_UNDYING).stack(64);
 
 		SHULKER_BOX_ITEM.addAll(Set.of(

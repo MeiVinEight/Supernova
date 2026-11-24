@@ -1,6 +1,5 @@
 package org.mve.sn.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -33,7 +32,7 @@ public abstract class GrindstoneMenuMixin extends AbstractContainerMenu implemen
 {
 	@Shadow
 	@Final
-	Container repairSlots;
+	private Container repairSlots;
 
 	@Unique
 	private int supernova = 0;
@@ -123,6 +122,7 @@ public abstract class GrindstoneMenuMixin extends AbstractContainerMenu implemen
 	public void mergeItems0(ItemStack itemStack, ItemStack itemStack2, CallbackInfoReturnable<ItemStack> cir)
 	{
 		if (!itemStack2.is(Items.BOOK)) return;
+		if (itemStack.is(Items.ENCHANTED_BOOK) && itemStack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).size() < 2) return;
 		int count = 0;
 		int cost = 0;
 		ItemStack result = Items.ENCHANTED_BOOK.getDefaultInstance();

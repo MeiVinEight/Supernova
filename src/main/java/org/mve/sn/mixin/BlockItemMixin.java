@@ -25,7 +25,7 @@ public class BlockItemMixin
 			return;
 		if (player.level().isClientSide())
 			return;
-		if ((player.containerMenu instanceof IAbstractContainerMenu iam) && (iam.supernova$lockHotbar() == player.getInventory().selected))
+		if ((player.containerMenu instanceof IAbstractContainerMenu iam) && (iam.supernova$lockHotbar() == player.getInventory().getSelectedSlot()))
 			cir.setReturnValue(InteractionResult.FAIL);
 	}
 }

@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.mve.sn.Configuration;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,7 +29,7 @@ import java.util.List;
 public class BlockMixin
 {
 	@Shadow
-	public static List<ItemStack> getDrops(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemStack itemStack)
+	public static List<ItemStack> getDrops(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, @Nullable BlockEntity blockEntity, @Nullable Entity entity, ItemInstance tool)
 	{
 		throw new AssertionError("Implemented via mixin");
 	}
@@ -83,15 +84,18 @@ public class BlockMixin
 		{
 			IntProvider xpRange = ((DropExperienceBlockAccessor) dropExp).xpRange();
 			int exp = EnchantmentHelper.processBlockExperience((ServerLevel) level, itemStack, xpRange.sample(level.getRandom()));
-			player.giveExperiencePoints(exp);
-			level.playSound(
-				null,
-				blockPos,
-				SoundEvents.EXPERIENCE_ORB_PICKUP,
-				SoundSource.PLAYERS,
-				0.1F,
-				(level.random.nextFloat() - level.random.nextFloat()) * 0.35F + 0.9F
-			);
+			if (exp > 0)
+			{
+				player.giveExperiencePoints(exp);
+				level.playSound(
+					null,
+					blockPos,
+					SoundEvents.EXPERIENCE_ORB_PICKUP,
+					SoundSource.PLAYERS,
+					0.1F,
+					(level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.35F + 0.9F
+				);
+			}
 		}
 	}
 }

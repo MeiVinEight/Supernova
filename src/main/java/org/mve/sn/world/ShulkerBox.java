@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -117,11 +118,11 @@ public class ShulkerBox implements Container
 	}
 
 	@Override
-	public void stopOpen(Player player)
+	public void stopOpen(ContainerUser player)
 	{
 		this.setChanged();
 		if (this.onClose != null)
-			this.onClose.accept(player);
+			this.onClose.accept((Player) player);
 		this.valid = false;
 	}
 
