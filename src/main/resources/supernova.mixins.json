@@ -6,6 +6,7 @@
 		"AbstractContainerMenuMixin",
 		"AbstractSkeletonEntityMixin",
 		"AnvilMenuMixin",
+		"BatMixin",
 		"BlockBehaviour$PropertiesMixin1",
 		"BlockBuilderMixin",
 		"BlockItemMixin",
