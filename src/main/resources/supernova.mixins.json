@@ -8,6 +8,8 @@
 		"AnvilMenuMixin",
 		"BlockItemMixin",
 		"BlockMixin",
+		"ChunkDeleteIgnoredLightDataFixMixin",
+		"ChunkDeleteLightFixMixin",
 		"DropExperienceBlockAccessor",
 		"EntityMixin",
 		"ExplosionMixin",
@@ -24,7 +26,8 @@
 		"ServerGamePacketListenerImplMixin",
 		"ServerPlayerGameModeMixin",
 		"ServerPlayerMixin",
-		"StringUtilMixin"
+		"StringTagMixin",
+		"StringUtilMixin",
 	],
 	"injectors": {
 		"defaultRequire": 1
