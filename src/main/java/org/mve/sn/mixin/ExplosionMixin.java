@@ -1,6 +1,6 @@
 package org.mve.sn.mixin;
 
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,13 +33,8 @@ public class ExplosionMixin
 	private void initReturn(ServerLevel level, Entity entity, DamageSource damageSource, ExplosionDamageCalculator damageCalculator, Vec3 center, float radius, boolean fire, Explosion.BlockInteraction blockInteraction, CallbackInfo ci)
 	{
 		if (entity == null) return;
-		Identifier key = entity.level()
-			.registryAccess()
-			.get(Registries.ENTITY_TYPE)
-			.orElseThrow()
-			.value()
-			.getKey(entity.getType());
-		if (key == null) return;
+		if (entity.level().isClientSide()) return;
+		Identifier key = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
 		if (Configuration.ENTITY_EXPLOSION.get().contains(key.toString()))
 			this.blockInteraction = Explosion.BlockInteraction.KEEP;
 	}
