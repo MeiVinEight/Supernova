@@ -101,7 +101,7 @@ public abstract class LivingEntityMixin extends Entity
 		List<Integer> gliding1 = itemStack.getEnchantments()
 			.entrySet()
 			.stream()
-			.filter(entry -> entry.getKey().is(Identifier.withDefaultNamespace("gliding")))
+			.filter(entry -> entry.getKey().is(Identifier.withDefaultNamespace("gliding")) || entry.getKey().is(Identifier.fromNamespaceAndPath(Supernova.SUPERNOVA, "gliding")))
 			.map(Object2IntMap.Entry::getIntValue)
 			.toList();
 		if (gliding1.isEmpty())
